@@ -10,7 +10,7 @@ public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne(x => x.Origin).WithMany();
-        builder.HasOne(x => x.Destination).WithMany();
+        builder.HasOne(x => x.Origin).WithMany().OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Destination).WithMany().OnDelete(DeleteBehavior.Restrict);
     }
 }
