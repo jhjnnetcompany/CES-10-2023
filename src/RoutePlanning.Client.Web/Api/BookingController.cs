@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RoutePlanning.Application.Locations.Commands.CreateTwoWayConnection;
 using RoutePlanning.Client.Web.Authorization;
 
 namespace RoutePlanning.Client.Web.Api;
@@ -19,7 +18,13 @@ public sealed class BookingController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task CancelBooking(CancelBookingCommand command)
+    public async Task GetBookings(CancelBookingCommand command)
+    {
+        await _mediator.Send(command);
+    }
+
+    [HttpPost("[action]")]
+    public async Task CancelBooking([FromBody] CancelBookingCommand command)
     {
         await _mediator.Send(command);
     }

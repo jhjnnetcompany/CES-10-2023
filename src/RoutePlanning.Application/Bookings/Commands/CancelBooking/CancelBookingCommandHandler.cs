@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Netcompany.Net.Cqs.Commands;
 using Netcompany.Net.DomainDrivenDesign.Services;
+using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Application.Bookings.Commands.CancelBooking;
 
-public sealed class CancelBookingCommandHandler : ICommandHandler<CancelBookingCommand>
+public sealed class GetBookingCommandHandler : ICommandHandler<CancelBookingCommand>
 {
     private readonly IRepository<Booking> _bookings;
 
-    public CancelBookingCommandHandler(IRepository<Booking> bookings)
+    public GetBookingCommandHandler(IRepository<Booking> bookings)
     {
         _bookings = bookings;
     }

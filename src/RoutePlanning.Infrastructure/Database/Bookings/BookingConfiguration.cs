@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Infrastructure.Database.Bookings;
 
@@ -9,6 +10,7 @@ public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasKey(x => x.TestAttribute);
+        builder.HasOne(x => x.Origin).WithMany();
+        builder.HasOne(x => x.Destination).WithMany();
     }
 }

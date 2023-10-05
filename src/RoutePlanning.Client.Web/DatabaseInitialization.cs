@@ -19,14 +19,32 @@ public static class DatabaseInitialization
         {
             await SeedUsers(context);
             await SeedLocationsAndRoutes(context);
-            await SeedBookings(context);
             unitOfWork.Commit();
         }
     }
 
-    private static async Task SeedBookings(RoutePlanningDatabaseContext context)
+    private static async Task CreateSingleBooking(
+        RoutePlanningDatabaseContext context,
+        Location origin,
+        Location destination,
+        DateTimeOffset departureDate,
+        DateTimeOffset arrivalDate,
+        string sizeCategory,
+        int weight,
+        string category,
+        string packageStatus)
     {
-        var test = new Booking("asd");
+        var test = new Booking
+        {
+            Origin = origin,
+            Destination = destination,
+            DepartureDate = departureDate,
+            ArrivalDate = arrivalDate,
+            SizeCategory = sizeCategory,
+            Weight = weight,
+            Category = category,
+            PackageStatus = packageStatus
+        };
         await context.AddAsync(test);
     }
 
@@ -148,6 +166,12 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, luanda, 8);
         CreateTwoWayConnection(goldCoast, whaleBay, 8);
         CreateTwoWayConnection(amatave, kapSuardafui, 8);
+
+        await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+        await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+        await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+        await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+        await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
     }
 
     private static async Task SeedUsers(RoutePlanningDatabaseContext context)
