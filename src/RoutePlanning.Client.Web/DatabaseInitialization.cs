@@ -1,6 +1,8 @@
 ﻿using Netcompany.Net.UnitOfWork;
+using RoutePlanning.Domain.Categories;
 using RoutePlanning.Domain.Locations;
 using RoutePlanning.Domain.Users;
+using RoutePlanning.Domain.WeightClasses;
 using RoutePlanning.Infrastructure.Database;
 
 namespace RoutePlanning.Client.Web;
@@ -19,9 +21,44 @@ public static class DatabaseInitialization
         {
             await SeedUsers(context);
             await SeedLocationsAndRoutes(context);
+            await seedCategories(context);
+            await seedWeightClasses(context);
 
             unitOfWork.Commit();
         }
+    }
+
+    private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
+    {
+        var ltOneKg = new WeightClass("< 1 KG");
+        await context.AddAsync(ltOneKg);
+
+        var betweenOneAndFive = new WeightClass("Between 1 and 5 KG");
+        await context.AddAsync(betweenOneAndFive);
+
+        var gtOneKg = new WeightClass("> 5 KG");
+        await context.AddAsync(gtOneKg);
+    }
+
+    private static async Task seedCategories(RoutePlanningDatabaseContext context)
+    {
+        var fees = new Category("Fee");
+        await context.AddAsync(fees);
+
+        var recordedDelivery = new Category("Recorded delivery");
+        await context.AddAsync(recordedDelivery);
+
+        var weapons = new Category("Weapons");
+        await context.AddAsync(weapons);
+
+        var liveAnimals = new Category("Live Animals");
+        await context.AddAsync(liveAnimals);
+
+        var cautiosParcels = new Category("Cautios Parcels");
+        await context.AddAsync(cautiosParcels);
+
+        var refridgeratedGoods = new Category("Refridgerated Goods");
+        await context.AddAsync(refridgeratedGoods);
     }
 
     private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
