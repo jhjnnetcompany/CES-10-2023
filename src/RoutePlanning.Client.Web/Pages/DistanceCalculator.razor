@@ -6,6 +6,9 @@
 
 <LocationSelector Label="Source" Locations="@Locations" @bind-Selected="SelectedSource"></LocationSelector>
 <LocationSelector Label="Destination" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
+<CategorySelector Label="Parcel Category" Categories="@Categories" @bind-Selected="SelectedCategory"></CategorySelector>
+<WeightClassSelector Label="Weight class" WeightClasses="@WeightClasses" @bind-Selected="SelectedWeightClass"></WeightClassSelector>
+
 
 <button class="btn btn-primary mb-5" @onclick="CalculateDistance">Calculate</button>
 
