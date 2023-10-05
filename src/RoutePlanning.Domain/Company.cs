@@ -6,12 +6,11 @@ namespace RoutePlanning.Domain.Locations;
 [DebuggerDisplay("{Source} --{Distance}--> {Destination}")]
 public sealed class Connection : Entity<Connection>
 {
-    public Connection(Location source, Location destination, Distance distance, Company company)
+    public Connection(Location source, Location destination, Distance distance)
     {
         Source = source;
         Destination = destination;
         Distance = distance;
-        Company = company;
     }
 
     private Connection()
@@ -19,7 +18,6 @@ public sealed class Connection : Entity<Connection>
         Source = null!;
         Destination = null!;
         Distance = null!;
-        Company = null!;
     }
 
     public Location Source { get; private set; }
@@ -27,5 +25,4 @@ public sealed class Connection : Entity<Connection>
     public Location Destination { get; private set; }
 
     public Distance Distance { get; private set; }
-    public Company Company { get; private set; }
 }
