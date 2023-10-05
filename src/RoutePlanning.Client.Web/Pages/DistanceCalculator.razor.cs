@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Components;
 using RoutePlanning.Application.Category.Queries.SelectableCategoryList;
-using RoutePlanning.Application.Locations.Queries.Distance;
 using RoutePlanning.Application.Locations.Queries.SelectableLocationList;
+using RoutePlanning.Application.Routes.Queries.GetRoutes;
+using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
 using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Client.Web.Pages;
@@ -26,6 +27,8 @@ public sealed partial class DistanceCalculator
     [Inject]
     private IMediator Mediator { get; set; } = default!;
 
+    private IEnumerable<RouteDetails> Route = new List<RouteDetails>();
+
     protected override async Task OnInitializedAsync()
     {
         Locations = await Mediator.Send(new SelectableLocationListQuery(), CancellationToken.None);
@@ -39,7 +42,19 @@ public sealed partial class DistanceCalculator
         {
             DisplaySource = SelectedSource.Name;
             DisplayDestination = SelectedDestination.Name;
-            DisplayDistance = await Mediator.Send(new DistanceQuery(SelectedSource.LocationId, SelectedDestination.LocationId), CancellationToken.None);
+            Route = await Mediator.Send(new GetRoutesQuery(
+                new string[] { SelectedCategory!.Name },
+                SelectedSource.Name,
+                SelectedDestination.Name,
+                ParcelSize.MaxHeight,
+                ParcelSize.MaxDepth,
+                ParcelSize.MaxBreadth,
+                WeightInKilos!.Value
+                ));
+
+
+            /*await Mediator.Send(new DistanceQuery(SelectedSource.LocationId, SelectedDestination.LocationId), CancellationToken.None);*/
+
         }
     }
 }
