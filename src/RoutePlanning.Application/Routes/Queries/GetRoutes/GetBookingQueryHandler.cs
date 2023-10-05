@@ -51,14 +51,14 @@ public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnum
         }).ToListAsync(cancellationToken);
     }
 #pragma warning disable CA1822 // Mark members as static
-    public double CalculatePriceFactor(double weightInKilos, int height, int depth, int breadth)
+    public double CalculatePriceFactor(double weightInKilos, double height, double depth, double breadth)
 #pragma warning restore CA1822 // Mark members as static
     {
         var sizeCategory = GetSizeCategory(height, depth, breadth);
         return weightInKilos + sizeCategory;
     }
 
-    public static double GetSizeCategory(int height, int depth, int breadth)
+    public static double GetSizeCategory(double height, double depth, double breadth)
     {
         return height + depth + breadth;
     }

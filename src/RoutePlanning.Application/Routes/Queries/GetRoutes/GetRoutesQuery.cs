@@ -6,8 +6,8 @@ public sealed record GetRoutesQuery(
     IEnumerable<string> CategoryNames,
     string DestinationName,
     string OriginName,
-    int Height,
-    int Depth,
-    int Breadth,
-    int Weight
+    double Height,
+    double Depth,
+    double Breadth,
+    double Weight
     ) : IQuery<IEnumerable<RouteDetails>>;
