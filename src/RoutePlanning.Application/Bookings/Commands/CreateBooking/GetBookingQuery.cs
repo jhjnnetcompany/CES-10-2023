@@ -9,4 +9,4 @@ public sealed record CreateBookingCommand(
     int Height,
     int Depth,
     int Breadth,
-    List<string> Category) : ICommand;
+    List<string> Categories) : ICommand;

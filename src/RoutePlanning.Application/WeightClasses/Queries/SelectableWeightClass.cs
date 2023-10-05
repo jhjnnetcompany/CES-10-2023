@@ -1,2 +1,2 @@
 ﻿namespace RoutePlanning.Application.WeightClass.Queries;
-public sealed record SelectableWeightClass(Domain.WeightClasses.WeightClass.EntityId WeightClassId, string Name);
+public sealed record SelectableWeightClass(Domain.ParcelWeight.EntityId WeightClassId, string Name);

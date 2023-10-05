@@ -10,7 +10,7 @@ public sealed class Booking : AggregateRoot<Booking>
     public DateTimeOffset DepartureDate { get; set; } = default!;
     public DateTimeOffset ArrivalDate { get; set; } = default!;
     public string SizeCategory { get; set; } = default!;
-    public int Weight { get; set; } = default!;
+    public double Weight { get; set; } = default!;
     public DeliveryStatus PackageStatus { get; set; }
-    public IEnumerable<ParcelCategory> Category { get; set; } = default!;
+    public IEnumerable<ParcelCategory> Categories { get; set; } = default!;
 }

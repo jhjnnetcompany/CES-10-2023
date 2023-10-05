@@ -1,6 +1,6 @@
 ﻿using Netcompany.Net.DomainDrivenDesign.Models;
 
-namespace RoutePlanning.Domain.Locations;
+namespace RoutePlanning.Domain;
 
 public sealed class ParcelCategory : Entity<ParcelCategory>
 {

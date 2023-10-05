@@ -2,7 +2,7 @@
 using Netcompany.Net.Cqs.Queries;
 using Netcompany.Net.DomainDrivenDesign.Services;
 using RoutePlanning.Application.Bookings.Queries.GetBookings.Models;
-using RoutePlanning.Domain.Locations;
+using RoutePlanning.Domain.Bookings;
 
 namespace RoutePlanning.Application.Bookings.Queries.GetBookings;
 
@@ -24,8 +24,8 @@ public sealed class GetBookingCommandQuery : IQueryHandler<GetBookingQuery, IEnu
             DepartureDate = x.DepartureDate,
             DestinationName = x.Destination.Name,
             ArrivalDate = x.ArrivalDate,
-            Category = x.Category,
-            PackageStatus = x.PackageStatus,
+            Categories = x.Categories.Select(x => x.Name),
+            PackageStatus = x.PackageStatus.ToString(),
             SizeCategory = x.SizeCategory,
             Weight = x.Weight
         }).ToListAsync(cancellationToken);

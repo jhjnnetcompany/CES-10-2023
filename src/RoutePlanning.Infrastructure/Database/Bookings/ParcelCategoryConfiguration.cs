@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RoutePlanning.Domain.Locations;
+using RoutePlanning.Domain;
 
 namespace RoutePlanning.Infrastructure.Database.Locations;
 
