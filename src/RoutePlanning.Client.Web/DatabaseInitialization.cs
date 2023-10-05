@@ -205,7 +205,12 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
         CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
-        var weaponsCategories = new List<ParcelCategory> { await CreateParcelCategory(context, "Weapons", 1, true) };
+        var weaponsCategory = await CreateParcelCategory(context, "Weapons", 1, true);
+        await CreateParcelCategory(context, "Recorded Delivery", 1, false);
+        await CreateParcelCategory(context, "Live Animals", 1, false);
+        await CreateParcelCategory(context, "Cautious parcels", 0.75, true);
+        await CreateParcelCategory(context, "Refrigerated goods", 0.1, true);
+        var weaponsCategories = new List<ParcelCategory> { weaponsCategory };
 
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
             weaponsCategories, DeliveryStatus.InTransit);

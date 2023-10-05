@@ -2,23 +2,31 @@
 using Netcompany.Net.Cqs.Queries;
 using Netcompany.Net.DomainDrivenDesign.Services;
 using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
+using RoutePlanning.Domain;
 using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Application.Routes.Queries.GetRoutes;
 
-public sealed class GetBookingCommandQuery : IQueryHandler<GetRoutesQuery, IEnumerable<RouteDetails>>
+public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnumerable<RouteDetails>>
 {
     private readonly IRepository<Connection> _connections;
+    private readonly IQueryable<ParcelCategory> _parcelCategories;
 
-    public GetBookingCommandQuery(IRepository<Connection> connections)
+    public GetBookingQueryHandler(IRepository<Connection> connections, IQueryable<ParcelCategory> parcelCategories)
     {
         _connections = connections;
+        _parcelCategories = parcelCategories;
     }
 
     public async Task<IEnumerable<RouteDetails>> Handle(GetRoutesQuery command, CancellationToken cancellationToken)
     {
-        if (command.CategoryNames.Any(x =>
-                x.ToLower() is "recorded delivery" or "live animals") || // TODO: Move to separate 'Banned categories' table
+        var isCategoryUnsupported = await _parcelCategories
+            .Where(x => !x.IsSupported)
+            .AnyAsync(x => command.CategoryNames
+                .Select(c => c.ToLower())
+                .Contains(x.Name.ToLower()), cancellationToken);
+
+        if (isCategoryUnsupported ||
             command.Weight > 20 ||
             command.Height > 200 ||
             command.Weight > 200 ||
