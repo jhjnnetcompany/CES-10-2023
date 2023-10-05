@@ -1,11 +1,11 @@
-﻿using Netcompany.Net.DomainDrivenDesign.Models;
+﻿using RoutePlanning.Domain.Locations;
 
-namespace RoutePlanning.Domain.Locations;
-
-public sealed class Booking : AggregateRoot<Booking>
+namespace RoutePlanning.Application.Bookings.Queries.GetBookings.Models;
+public class BookingDetails
 {
-    public Location Origin { get; set; } = default!;
-    public Location Destination { get; set; } = default!;
+    public Booking.EntityId BookingId { get; set; } = default!;
+    public string OriginName { get; set; } = default!;
+    public string DestinationName { get; set; } = default!;
     public DateTimeOffset DepartureDate { get; set; } = default!;
     public DateTimeOffset ArrivalDate { get; set; } = default!;
     public string SizeCategory { get; set; } = default!;

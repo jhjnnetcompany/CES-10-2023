@@ -23,6 +23,6 @@ public sealed class DistanceQueryhandler : IQueryHandler<DistanceQuery, double>
 
         var distance = _shortestDistanceService.CalculateShortestDistance(source, destination);
 
-        return distance;
+        return distance.Sum(x => x.Distance);
     }
 }

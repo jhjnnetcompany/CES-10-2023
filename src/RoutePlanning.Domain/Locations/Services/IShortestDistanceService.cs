@@ -4,5 +4,5 @@ namespace RoutePlanning.Domain.Locations.Services;
 
 public interface IShortestDistanceService : IDomainService
 {
-    double CalculateShortestDistance(Location source, Location target);
+    IEnumerable<Connection> CalculateShortestDistance(Location source, Location target);
 }
