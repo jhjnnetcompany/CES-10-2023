@@ -6,11 +6,11 @@ using RoutePlanning.Domain.Bookings;
 
 namespace RoutePlanning.Application.Bookings.Queries.GetBookings;
 
-public sealed class GetBookingCommandQuery : IQueryHandler<GetBookingQuery, IEnumerable<BookingDetails>>
+public sealed class GetBookingQueryHandler : IQueryHandler<GetBookingQuery, IEnumerable<BookingDetails>>
 {
     private readonly IRepository<Booking> _bookings;
 
-    public GetBookingCommandQuery(IRepository<Booking> bookings)
+    public GetBookingQueryHandler(IRepository<Booking> bookings)
     {
         _bookings = bookings;
     }

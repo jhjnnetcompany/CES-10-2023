@@ -20,9 +20,9 @@ public static class DatabaseInitialization
         await using (var unitOfWork = unitOfWorkManager.Initiate())
         {
             await SeedUsers(context);
+            await SeedCategories(context);
             await SeedLocationsAndRoutes(context);
-            await seedCategories(context);
-            await seedWeightClasses(context);
+            await SeedWeightClasses(context);
 
             unitOfWork.Commit();
         }
@@ -53,7 +53,7 @@ public static class DatabaseInitialization
         await context.AddAsync(booking);
     }
 
-    private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
+    private static async Task SeedWeightClasses(RoutePlanningDatabaseContext context)
     {
         var ltOneKg = new ParcelWeight("< 1 KG");
         await context.AddAsync(ltOneKg);
@@ -65,22 +65,13 @@ public static class DatabaseInitialization
         await context.AddAsync(gtOneKg);
     }
 
-    private static async Task seedCategories(RoutePlanningDatabaseContext context)
+    private static async Task SeedCategories(RoutePlanningDatabaseContext context)
     {
-        var recordedDelivery = new ParcelCategory { Name = "Recorded delivery" };
-        await context.AddAsync(recordedDelivery);
-
-        var weapons = new ParcelCategory { Name = "Weapons" };
-        await context.AddAsync(weapons);
-
-        var liveAnimals = new ParcelCategory { Name = "Live Animals" };
-        await context.AddAsync(liveAnimals);
-
-        var cautiosParcels = new ParcelCategory { Name = "Cautios Parcels" };
-        await context.AddAsync(cautiosParcels);
-
-        var refridgeratedGoods = new ParcelCategory { Name = "Refridgerated Goods" };
-        await context.AddAsync(refridgeratedGoods);
+        await CreateParcelCategory(context, "Weapons", 1, true);
+        await CreateParcelCategory(context, "Recorded Delivery", 1, false);
+        await CreateParcelCategory(context, "Live Animals", 1, false);
+        await CreateParcelCategory(context, "Cautious parcels", 0.75, true);
+        await CreateParcelCategory(context, "Refrigerated goods", 0.1, true);
     }
 
     private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
@@ -205,7 +196,10 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
         CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
-        var weaponsCategories = new List<ParcelCategory> { await CreateParcelCategory(context, "Weapons", 1, true) };
+        var weaponsCategories = new List<ParcelCategory>
+        {
+            context.Set<ParcelCategory>().Local.First()
+        };
 
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
             weaponsCategories, DeliveryStatus.InTransit);

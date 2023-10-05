@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlanning.Application.Locations.Commands.CreateTwoWayConnection;
+using RoutePlanning.Application.Routes.Queries.GetRoutes;
+using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
 using RoutePlanning.Client.Web.Authorization;
 
 namespace RoutePlanning.Client.Web.Api;
@@ -12,10 +14,12 @@ namespace RoutePlanning.Client.Web.Api;
 public sealed class RoutesController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IQueryable<Domain.Locations.Connection> _connections;
 
-    public RoutesController(IMediator mediator)
+    public RoutesController(IMediator mediator, IQueryable<Domain.Locations.Connection> connections)
     {
         _mediator = mediator;
+        _connections = connections;
     }
 
     [HttpGet("[action]")]
@@ -23,10 +27,16 @@ public sealed class RoutesController : ControllerBase
     {
         return Task.FromResult("Hello World!");
     }
-    
+
     [HttpPost("[action]")]
     public async Task AddTwoWayConnection(CreateTwoWayConnectionCommand command)
     {
         await _mediator.Send(command);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IEnumerable<RouteDetails>> GetPlaneRoutes(GetRoutesQuery command)
+    {
+        return await _mediator.Send(command);
     }
 }
