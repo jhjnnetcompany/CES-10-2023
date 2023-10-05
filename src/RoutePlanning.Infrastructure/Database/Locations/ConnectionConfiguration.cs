@@ -12,7 +12,7 @@ public sealed class ConnectionConfiguration : IEntityTypeConfiguration<Connectio
 
         builder.HasOne(x => x.Destination).WithMany();
 
-        //builder.HasOne(x => x.Company);
+        builder.HasOne(x => x.Company).WithMany();
 
         builder.OwnsOne(x => x.TimeInHours);
 
