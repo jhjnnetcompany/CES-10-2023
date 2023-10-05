@@ -169,7 +169,7 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, luanda, 8, 1, oceanic);
         CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
         CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
-       
+
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
         await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
         await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
