@@ -1,4 +1,5 @@
 ﻿using Netcompany.Net.DomainDrivenDesign.Models;
+using RoutePlanning.Domain.Categories;
 using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Domain.Bookings;

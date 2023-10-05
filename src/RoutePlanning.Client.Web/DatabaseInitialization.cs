@@ -226,10 +226,7 @@ public static class DatabaseInitialization
 
     private static async Task<Category> CreateCategory(RoutePlanningDatabaseContext context, string name)
     {
-        var newCategory = new Category
-        {
-            Name = name
-        };
+        var newCategory = new Category(name);
         return (await context.AddAsync(newCategory)).Entity;
     }
 
