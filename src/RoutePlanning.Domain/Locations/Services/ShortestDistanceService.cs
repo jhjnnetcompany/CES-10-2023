@@ -27,7 +27,7 @@ public sealed class ShortestDistanceService : IShortestDistanceService
     private static IEnumerable<Connection> CalculateShortestPath(IEnumerable<Location> locations, Location start, Location end)
     {
         var shortestConnections = CalculateShortestConnections(locations, start, end);
-        
+
         var path = ConstructShortestPath(start, end, shortestConnections);
 
         return path;
