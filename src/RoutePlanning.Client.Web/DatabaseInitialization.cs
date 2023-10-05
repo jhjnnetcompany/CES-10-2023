@@ -19,9 +19,15 @@ public static class DatabaseInitialization
         {
             await SeedUsers(context);
             await SeedLocationsAndRoutes(context);
-
+            await SeedBookings(context);
             unitOfWork.Commit();
         }
+    }
+
+    private static async Task SeedBookings(RoutePlanningDatabaseContext context)
+    {
+        var test = new Booking("asd");
+        await context.AddAsync(test);
     }
 
     private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
