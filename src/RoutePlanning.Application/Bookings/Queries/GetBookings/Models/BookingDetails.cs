@@ -1,4 +1,4 @@
-﻿using RoutePlanning.Domain.Locations;
+﻿using RoutePlanning.Domain.Bookings;
 
 namespace RoutePlanning.Application.Bookings.Queries.GetBookings.Models;
 public class BookingDetails
@@ -9,7 +9,7 @@ public class BookingDetails
     public DateTimeOffset DepartureDate { get; set; } = default!;
     public DateTimeOffset ArrivalDate { get; set; } = default!;
     public string SizeCategory { get; set; } = default!;
-    public int Weight { get; set; } = default!;
-    public string Category { get; set; } = default!;
+    public double Weight { get; set; } = default!;
+    public IEnumerable<string> Category { get; set; } = default!;
     public string PackageStatus { get; set; } = default!;
 }

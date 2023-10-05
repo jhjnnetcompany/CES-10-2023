@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Netcompany.Net.Cqs.Commands;
 using Netcompany.Net.DomainDrivenDesign.Services;
-using RoutePlanning.Domain.Locations;
+using RoutePlanning.Domain.Bookings;
 
 namespace RoutePlanning.Application.Bookings.Commands.CancelBooking;
 
