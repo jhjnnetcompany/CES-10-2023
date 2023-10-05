@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
             builder.UseSqlite(keepAliveConnection);
             builder.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
         });
-
+        
         services.AddDomainDrivenDesign(options => options.UseDbContext<RoutePlanningDatabaseContext>());
         services.AddUnitOfWork(builder => builder.UseAmbientTransactions().With<RoutePlanningDatabaseContext>());
 

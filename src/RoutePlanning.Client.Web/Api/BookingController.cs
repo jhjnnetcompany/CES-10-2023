@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RoutePlanning.Application.Bookings.Commands.CreateBooking;
 using RoutePlanning.Client.Web.Authorization;
 
 namespace RoutePlanning.Client.Web.Api;
@@ -25,6 +26,12 @@ public sealed class BookingController : ControllerBase
 
     [HttpPost("[action]")]
     public async Task CancelBooking([FromBody] CancelBookingCommand command)
+    {
+        await _mediator.Send(command);
+    }
+
+    [HttpPost("[action]")]
+    public async Task CreateBooking([FromBody] CreateBookingCommand command)
     {
         await _mediator.Send(command);
     }

@@ -1,4 +1,5 @@
 ﻿using Netcompany.Net.UnitOfWork;
+using RoutePlanning.Domain.Bookings;
 using RoutePlanning.Domain.Locations;
 using RoutePlanning.Domain.Users;
 using RoutePlanning.Infrastructure.Database;
@@ -31,10 +32,10 @@ public static class DatabaseInitialization
         DateTimeOffset arrivalDate,
         string sizeCategory,
         int weight,
-        string category,
+        IEnumerable<Category> category,
         string packageStatus)
     {
-        var test = new Booking
+        var booking = new Booking
         {
             Origin = origin,
             Destination = destination,
@@ -45,7 +46,7 @@ public static class DatabaseInitialization
             Category = category,
             PackageStatus = packageStatus
         };
-        await context.AddAsync(test);
+        await context.AddAsync(booking);
     }
 
     private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
@@ -167,11 +168,28 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, whaleBay, 8);
         CreateTwoWayConnection(amatave, kapSuardafui, 8);
 
-        await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
-        await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
-        await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
-        await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
-        await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+        var weaponsCategories = new List<Category> { await CreateCategory(context, "Weapons") };
+
+        await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
+            weaponsCategories, "In transit");
+        await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
+            weaponsCategories, "In transit");
+        await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
+            weaponsCategories, "In transit");
+        await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
+            weaponsCategories, "In transit");
+        await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
+            weaponsCategories, "In transit");
+    }
+
+
+    private static async Task<Category> CreateCategory(RoutePlanningDatabaseContext context, string name)
+    {
+        var newCategory = new Category
+        {
+            Name = name
+        };
+        return (await context.AddAsync(newCategory)).Entity;
     }
 
     private static async Task SeedUsers(RoutePlanningDatabaseContext context)

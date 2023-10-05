@@ -1,6 +1,7 @@
 ﻿using Netcompany.Net.DomainDrivenDesign.Models;
+using RoutePlanning.Domain.Locations;
 
-namespace RoutePlanning.Domain.Locations;
+namespace RoutePlanning.Domain.Bookings;
 
 public sealed class Booking : AggregateRoot<Booking>
 {
@@ -9,7 +10,7 @@ public sealed class Booking : AggregateRoot<Booking>
     public DateTimeOffset DepartureDate { get; set; } = default!;
     public DateTimeOffset ArrivalDate { get; set; } = default!;
     public string SizeCategory { get; set; } = default!;
-    public int Weight { get; set; } = default!;
-    public string Category { get; set; } = default!;
+    public double Weight { get; set; } = default!;
+    public IEnumerable<Category> Categories { get; set; } = default!;
     public string PackageStatus { get; set; } = default!;
 }
