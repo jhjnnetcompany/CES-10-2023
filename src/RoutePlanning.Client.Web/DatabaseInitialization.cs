@@ -1,201 +1,225 @@
-﻿using Netcompany.Net.UnitOfWork;
-using RoutePlanning.Domain.Categories;
-using RoutePlanning.Domain.Locations;
-using RoutePlanning.Domain.Users;
-using RoutePlanning.Domain.WeightClasses;
-using RoutePlanning.Infrastructure.Database;
-
-namespace RoutePlanning.Client.Web;
+﻿namespace RoutePlanning.Client.Web;
 
 public static class DatabaseInitialization
 {
-    public static async Task SeedDatabase(WebApplication app)
-    {
-        using var serviceScope = app.Services.CreateScope();
+	public static async Task SeedDatabase(WebApplication app)
+	{
+		using var serviceScope = app.Services.CreateScope();
 
-        var context = serviceScope.ServiceProvider.GetRequiredService<RoutePlanningDatabaseContext>();
-        await context.Database.EnsureCreatedAsync();
+		var context = serviceScope.ServiceProvider.GetRequiredService<RoutePlanningDatabaseContext>();
+		await context.Database.EnsureCreatedAsync();
 
-        var unitOfWorkManager = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
-        await using (var unitOfWork = unitOfWorkManager.Initiate())
-        {
-            await SeedUsers(context);
-            await SeedLocationsAndRoutes(context);
-            await seedCategories(context);
-            await seedWeightClasses(context);
+		var unitOfWorkManager = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
+		await using (var unitOfWork = unitOfWorkManager.Initiate())
+		{
+			await SeedUsers(context);
+			await SeedLocationsAndRoutes(context);
+			await seedCategories(context);
+			await seedWeightClasses(context);
 
-            unitOfWork.Commit();
-        }
-    }
+			unitOfWork.Commit();
+		}
+	}
 
-    private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
-    {
-        var ltOneKg = new WeightClass("< 1 KG");
-        await context.AddAsync(ltOneKg);
+	private static async Task CreateSingleBooking(
+		RoutePlanningDatabaseContext context,
+		Location origin,
+		Location destination,
+		DateTimeOffset departureDate,
+		DateTimeOffset arrivalDate,
+		string sizeCategory,
+		int weight,
+		string category,
+		string packageStatus)
+	{
+		var test = new Booking
+		{
+			Origin = origin,
+			Destination = destination,
+			DepartureDate = departureDate,
+			ArrivalDate = arrivalDate,
+			SizeCategory = sizeCategory,
+			Weight = weight,
+			Category = category,
+			PackageStatus = packageStatus
+		};
+		await context.AddAsync(test);
+	}
 
-        var betweenOneAndFive = new WeightClass("Between 1 and 5 KG");
-        await context.AddAsync(betweenOneAndFive);
+	private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
+	{
+		var ltOneKg = new WeightClass("< 1 KG");
+		await context.AddAsync(ltOneKg);
 
-        var gtOneKg = new WeightClass("> 5 KG");
-        await context.AddAsync(gtOneKg);
-    }
+		var betweenOneAndFive = new WeightClass("Between 1 and 5 KG");
+		await context.AddAsync(betweenOneAndFive);
 
-    private static async Task seedCategories(RoutePlanningDatabaseContext context)
-    {
-        var fees = new Category("Fee");
-        await context.AddAsync(fees);
+		var gtOneKg = new WeightClass("> 5 KG");
+		await context.AddAsync(gtOneKg);
+	}
 
-        var recordedDelivery = new Category("Recorded delivery");
-        await context.AddAsync(recordedDelivery);
+	private static async Task seedCategories(RoutePlanningDatabaseContext context)
+	{
+		var fees = new Category("Fee");
+		await context.AddAsync(fees);
 
-        var weapons = new Category("Weapons");
-        await context.AddAsync(weapons);
+		var recordedDelivery = new Category("Recorded delivery");
+		await context.AddAsync(recordedDelivery);
 
-        var liveAnimals = new Category("Live Animals");
-        await context.AddAsync(liveAnimals);
+		var weapons = new Category("Weapons");
+		await context.AddAsync(weapons);
 
-        var cautiosParcels = new Category("Cautios Parcels");
-        await context.AddAsync(cautiosParcels);
+		var liveAnimals = new Category("Live Animals");
+		await context.AddAsync(liveAnimals);
 
-        var refridgeratedGoods = new Category("Refridgerated Goods");
-        await context.AddAsync(refridgeratedGoods);
-    }
+		var cautiosParcels = new Category("Cautios Parcels");
+		await context.AddAsync(cautiosParcels);
 
-    private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
-    {
-        var cairo = new Location("Cairo");
-        await context.AddAsync(cairo);
+		var refridgeratedGoods = new Category("Refridgerated Goods");
+		await context.AddAsync(refridgeratedGoods);
+	}
 
-        var tripoli = new Location("Tripoli");
-        await context.AddAsync(tripoli);
+	private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
+	{
+		var cairo = new Location("Cairo");
+		await context.AddAsync(cairo);
 
-        var tunis = new Location("Tunis");
-        await context.AddAsync(tunis);
+		var tripoli = new Location("Tripoli");
+		await context.AddAsync(tripoli);
 
-        var marrakesh = new Location("Marrakesh");
-        await context.AddAsync(marrakesh);
+		var tunis = new Location("Tunis");
+		await context.AddAsync(tunis);
 
-        var canaryIslands = new Location("Canary island");
-        await context.AddAsync(canaryIslands);
+		var marrakesh = new Location("Marrakesh");
+		await context.AddAsync(marrakesh);
 
-        var tanger = new Location("Tanger");
-        await context.AddAsync(tanger);
+		var canaryIslands = new Location("Canary island");
+		await context.AddAsync(canaryIslands);
 
-        var sahara = new Location("Sahara");
-        await context.AddAsync(sahara);
+		var tanger = new Location("Tanger");
+		await context.AddAsync(tanger);
 
-        var omdurman = new Location("Omdurman");
-        await context.AddAsync(omdurman);
+		var sahara = new Location("Sahara");
+		await context.AddAsync(sahara);
 
-        var suakin = new Location("Suakin");
-        await context.AddAsync(suakin);
+		var omdurman = new Location("Omdurman");
+		await context.AddAsync(omdurman);
 
-        var addisAbeba = new Location("Addis Abeba");
-        await context.AddAsync(addisAbeba);
+		var suakin = new Location("Suakin");
+		await context.AddAsync(suakin);
 
-        var kapSuardafui = new Location("Kap Suardafui");
-        await context.AddAsync(kapSuardafui);
+		var addisAbeba = new Location("Addis Abeba");
+		await context.AddAsync(addisAbeba);
 
-        var wadai = new Location("Wadai");
-        await context.AddAsync(wadai);
+		var kapSuardafui = new Location("Kap Suardafui");
+		await context.AddAsync(kapSuardafui);
 
-        var sierraLeone = new Location("Sierra Leone");
-        await context.AddAsync(sierraLeone);
+		var wadai = new Location("Wadai");
+		await context.AddAsync(wadai);
 
-        var dakar = new Location("Dakar");
-        await context.AddAsync(dakar);
+		var sierraLeone = new Location("Sierra Leone");
+		await context.AddAsync(sierraLeone);
 
-        var darfur = new Location("Darfur");
-        await context.AddAsync(darfur);
+		var dakar = new Location("Dakar");
+		await context.AddAsync(dakar);
 
-        var timbuktu = new Location("Timbuktu");
-        await context.AddAsync(timbuktu);
+		var darfur = new Location("Darfur");
+		await context.AddAsync(darfur);
 
-        var goldCoast = new Location("Gold Coast");
-        await context.AddAsync(goldCoast);
+		var timbuktu = new Location("Timbuktu");
+		await context.AddAsync(timbuktu);
 
-        var slaveCoast = new Location("Slave Coast");
-        await context.AddAsync(slaveCoast);
+		var goldCoast = new Location("Gold Coast");
+		await context.AddAsync(goldCoast);
 
-        var bahrelGhazal = new Location("Bahrel Ghazal");
-        await context.AddAsync(bahrelGhazal);
+		var slaveCoast = new Location("Slave Coast");
+		await context.AddAsync(slaveCoast);
 
-        var lakeVictoria = new Location("Lake Victoria");
-        await context.AddAsync(lakeVictoria);
+		var bahrelGhazal = new Location("Bahrel Ghazal");
+		await context.AddAsync(bahrelGhazal);
 
-        var zanzibar = new Location("Zanzibar");
-        await context.AddAsync(zanzibar);
+		var lakeVictoria = new Location("Lake Victoria");
+		await context.AddAsync(lakeVictoria);
 
-        var congo = new Location("Congo");
-        await context.AddAsync(congo);
+		var zanzibar = new Location("Zanzibar");
+		await context.AddAsync(zanzibar);
 
-        var kabalo = new Location("Kabalo");
-        await context.AddAsync(kabalo);
+		var congo = new Location("Congo");
+		await context.AddAsync(congo);
 
-        var luanda = new Location("Luanda");
-        await context.AddAsync(luanda);
+		var kabalo = new Location("Kabalo");
+		await context.AddAsync(kabalo);
 
-        var victoriaFalls = new Location("Victoria Falls");
-        await context.AddAsync(victoriaFalls);
+		var luanda = new Location("Luanda");
+		await context.AddAsync(luanda);
 
-        var mocambique = new Location("Mocambique");
-        await context.AddAsync(mocambique);
+		var victoriaFalls = new Location("Victoria Falls");
+		await context.AddAsync(victoriaFalls);
 
-        var stHelena = new Location("St. Helena");
-        await context.AddAsync(stHelena);
+		var mocambique = new Location("Mocambique");
+		await context.AddAsync(mocambique);
 
-        var whaleBay = new Location("Whale Bay");
-        await context.AddAsync(whaleBay);
+		var stHelena = new Location("St. Helena");
+		await context.AddAsync(stHelena);
 
-        var dragonMountain = new Location("Dragon Mountain");
-        await context.AddAsync(dragonMountain);
+		var whaleBay = new Location("Whale Bay");
+		await context.AddAsync(whaleBay);
 
-        var capeTown = new Location("Cape Town");
-        await context.AddAsync(capeTown);
+		var dragonMountain = new Location("Dragon Mountain");
+		await context.AddAsync(dragonMountain);
 
-        var amatave = new Location("Amatave");
-        await context.AddAsync(amatave);
+		var capeTown = new Location("Cape Town");
+		await context.AddAsync(capeTown);
 
-        var stMarie = new Location("St. Marie");
-        await context.AddAsync(stMarie);
+		var amatave = new Location("Amatave");
+		await context.AddAsync(amatave);
 
-        CreateTwoWayConnection(tripoli, tanger, 8);
-        CreateTwoWayConnection(tanger, marrakesh, 8);
-        CreateTwoWayConnection(marrakesh, sierraLeone, 8);
-        CreateTwoWayConnection(marrakesh, goldCoast, 8);
-        CreateTwoWayConnection(tripoli, goldCoast, 8);
-        CreateTwoWayConnection(sierraLeone, stHelena, 8);
-        CreateTwoWayConnection(stHelena, capeTown, 8);
-        CreateTwoWayConnection(capeTown, whaleBay, 8);
-        CreateTwoWayConnection(capeTown, dragonMountain, 8);
-        CreateTwoWayConnection(capeTown, amatave, 8);
-        CreateTwoWayConnection(capeTown, stMarie, 8);
-        CreateTwoWayConnection(dragonMountain, lakeVictoria, 8);
-        CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8);
-        CreateTwoWayConnection(suakin, darfur, 8);
-        CreateTwoWayConnection(suakin, cairo, 8);
-        CreateTwoWayConnection(darfur, kabalo, 8);
-        CreateTwoWayConnection(tripoli, darfur, 8);
-        CreateTwoWayConnection(goldCoast, luanda, 8);
-        CreateTwoWayConnection(goldCoast, whaleBay, 8);
-        CreateTwoWayConnection(amatave, kapSuardafui, 8);
-    }
+		var stMarie = new Location("St. Marie");
+		await context.AddAsync(stMarie);
 
-    private static async Task SeedUsers(RoutePlanningDatabaseContext context)
-    {
-        var dan = new User("dan", User.ComputePasswordHash("dan123!"));
-        await context.AddAsync(dan);
+		CreateTwoWayConnection(tripoli, tanger, 8);
+		CreateTwoWayConnection(tanger, marrakesh, 8);
+		CreateTwoWayConnection(marrakesh, sierraLeone, 8);
+		CreateTwoWayConnection(marrakesh, goldCoast, 8);
+		CreateTwoWayConnection(tripoli, goldCoast, 8);
+		CreateTwoWayConnection(sierraLeone, stHelena, 8);
+		CreateTwoWayConnection(stHelena, capeTown, 8);
+		CreateTwoWayConnection(capeTown, whaleBay, 8);
+		CreateTwoWayConnection(capeTown, dragonMountain, 8);
+		CreateTwoWayConnection(capeTown, amatave, 8);
+		CreateTwoWayConnection(capeTown, stMarie, 8);
+		CreateTwoWayConnection(dragonMountain, lakeVictoria, 8);
+		CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8);
+		CreateTwoWayConnection(suakin, darfur, 8);
+		CreateTwoWayConnection(suakin, cairo, 8);
+		CreateTwoWayConnection(darfur, kabalo, 8);
+		CreateTwoWayConnection(tripoli, darfur, 8);
+		CreateTwoWayConnection(goldCoast, luanda, 8);
+		CreateTwoWayConnection(goldCoast, whaleBay, 8);
+		CreateTwoWayConnection(amatave, kapSuardafui, 8);
 
-        var alice = new User("alice", User.ComputePasswordHash("alice123!"));
-        await context.AddAsync(alice);
+		await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+		await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+		await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+		await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+		await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
+	}
 
-        var bob = new User("bob", User.ComputePasswordHash("!CapableStudentCries25"));
-        await context.AddAsync(bob);
-    }
+	private static async Task SeedUsers(RoutePlanningDatabaseContext context)
+	{
+		var dan = new User("dan", User.ComputePasswordHash("dan123!"));
+		await context.AddAsync(dan);
 
-    private static void CreateTwoWayConnection(Location locationA, Location locationB, int distance)
-    {
-        locationA.AddConnection(locationB, distance);
-        locationB.AddConnection(locationA, distance);
-    }
+		var alice = new User("alice", User.ComputePasswordHash("alice123!"));
+		await context.AddAsync(alice);
+
+		var bob = new User("bob", User.ComputePasswordHash("!CapableStudentCries25"));
+		await context.AddAsync(bob);
+	}
+
+	private static void CreateTwoWayConnection(Location locationA, Location locationB, int distance)
+	{
+		locationA.AddConnection(locationB, distance);
+		locationB.AddConnection(locationA, distance);
+	}
 }

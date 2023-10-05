@@ -1,0 +1,51 @@
+﻿@page "/Overview"
+@using RoutePlanning.Application.Bookings.Queries.GetBookings.Models
+
+<h3>List Display</h3>
+
+<div class="table--responsive-scroll">
+    <table class="table">
+        <thead>
+        <tr>
+                <th scope="col function-link" @onclick="() => SortByColumn(0)">Origin</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(1)">Destination</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(2)">Departure Date</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(3)">Arrival Date</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(4)">Volume</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(5)">Weight</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(6)">Category</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(7)">Package Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var row in SortedBookings)
+        {
+            <tr>
+                    <th>@row.OriginName</th>
+                    <th>@row.DestinationName</th>
+                    <th>@row.DepartureDate</th>
+                    <th>@row.ArrivalDate</th>
+                    <th>@row.SizeCategory</th>
+                    <th>@row.Weight</th>
+                    <th>@row.Category</th>
+                    <th>@row.PackageStatus</th>
+                <th>
+                        <a class="function-link" @onclick="() => CancelBooking(row)">Cancel</a>
+                </th>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private void SortByColumn(int columnId)
+    {
+        // Implement sorting logic based on the selected column
+        // For simplicity, we'll just sort the list alphabetically here
+        SortedBookings = _bookings
+            .OrderBy(booking => booking.BookingId)
+            .ToList();
+    }
+}

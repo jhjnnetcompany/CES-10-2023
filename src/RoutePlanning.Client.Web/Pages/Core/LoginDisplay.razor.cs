@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Components;
 using RoutePlanning.Application.Users.Queries.AuthenticatedUser;
 using RoutePlanning.Client.Web.Authentication;
 
