@@ -6,9 +6,9 @@ public sealed class SelectableWeightClassListQueryHandler : IQueryHandler<Select
 {
     private readonly IQueryable<Domain.ParcelWeight> _weightClasses;
 
-    public SelectableWeightClassListQueryHandler(IQueryable<Domain.ParcelWeight> locations)
+    public SelectableWeightClassListQueryHandler(IQueryable<Domain.ParcelWeight> weights)
     {
-        _weightClasses = locations;
+        _weightClasses = weights;
     }
 
     public async Task<IReadOnlyList<SelectableWeightClass>> Handle(SelectableWeightClassListQuery _, CancellationToken cancellationToken)
