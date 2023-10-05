@@ -12,5 +12,9 @@ public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
 
         builder.HasOne(x => x.Origin).WithMany().OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Destination).WithMany().OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .HasMany(x => x.Categories)
+            .WithMany(x => x.Booking);
     }
 }

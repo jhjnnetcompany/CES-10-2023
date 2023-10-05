@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoutePlanning.Application.Bookings.Commands.CreateBooking;
+using RoutePlanning.Application.Bookings.Queries.GetBookings;
 using RoutePlanning.Client.Web.Authorization;
 
 namespace RoutePlanning.Client.Web.Api;
@@ -19,7 +20,7 @@ public sealed class BookingController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task GetBookings(CancelBookingCommand command)
+    public async Task GetBookings(GetBookingQuery command)
     {
         await _mediator.Send(command);
     }

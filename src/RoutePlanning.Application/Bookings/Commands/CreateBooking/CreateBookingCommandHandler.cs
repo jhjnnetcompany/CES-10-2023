@@ -31,17 +31,18 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
             .SingleAsync(x => x.Name == command.DestinationName, cancellationToken);
 
         var categories = await _categories
-            .Where(x => command.Categories.Any(c => c == x.Name))
+            .Where(x => command.CategoryNames.Any(c => c == x.Name))
+            .AsTracking()
             .ToListAsync(cancellationToken);
 
         var newBooking = new Booking
         {
-            Categories = categories,
-            DepartureDate = command.DepartureDate,
-            Destination = destinationLocation,
             Origin = originLocation,
-            PackageStatus = DeliveryStatus.Booked, // TODO: CALCULATE THIS
+            SizeCategory = "Test",
             Weight = command.WeightInKilos,
+            PackageStatus = DeliveryStatus.Booked, // TODO: CALCULATE THIS
+            Destination = destinationLocation,
+            Categories = categories,
         };
         // TODO: REDUCE CAPACITY WHEN WE HAVE A REMAINING VOLUME
         await _bookings.Add(newBooking, cancellationToken);
