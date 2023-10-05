@@ -22,7 +22,7 @@ public sealed class PathTest
         var shortestDistanceService = new ShortestDistanceService(locations.AsQueryable());
 
         // Act
-        var distance = shortestDistanceService.CalculateShortestDistance(locationA, locationC);
+        var distance = shortestDistanceService.GetShortestDistance(locationA, locationC);
 
         // Assert
         Assert.Equal(5, distance.Sum(x => x.TimeInHours));
