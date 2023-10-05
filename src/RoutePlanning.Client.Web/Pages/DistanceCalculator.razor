@@ -9,9 +9,48 @@
 <CategorySelector Label="Parcel Category" Categories="@Categories" @bind-Selected="SelectedCategory"></CategorySelector>
 <WeightClassSelector Label="Weight class" WeightClasses="@WeightClasses" @bind-Selected="SelectedWeightClass"></WeightClassSelector>
 
-<LocationSelector Label="DestinationName" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
+<div class="form-group row mb-3">
+    <label for="parcel-height" class="col-sm-2 col-form-label">Parcel height</label>
+    <div id="parcel-height" class="col-sm-4">
+        <input class="form-control" type="number" @bind="ParcelSize.MaxHeight" />
+    </div>
+</div>
 
-<button class="btn btn-primary mb-5" @onclick="CalculateDistance">Calculate</button>
+<div class="form-group row mb-3">
+	<label for="parcel-breadth" class="col-sm-2 col-form-label">Parcel Breadth</label>
+    <div id="parcel-breadth" class="col-sm-4">
+		<input class="form-control" type="number" @bind="ParcelSize.MaxBreadth" />
+    </div>
+</div>
+<div class="form-group row mb-3">
+	<label for="parcel-height" class="col-sm-2 col-form-label">Parcel Depth</label>
+    <div id="parcel-depth" class="col-sm-4">
+		<input class="form-control" type="number" @bind="ParcelSize.MaxDepth" />
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+	<label for="departure-date" class="col-sm-2 col-form-label">Departure date</label>
+    <div id="departure-date" class="col-sm-4">
+		<input class="form-control" type="date" @bind="SelectedDepartureDate" /> 
+    </div>
+</div>
+<div class="form-group row mb-3">
+	<label for="arrival-date" class="col-sm-2 col-form-label">Arrival date</label>
+	<div id="arrival-date" class="col-sm-4">
+		<input class="form-control" type="date" @bind="SelectedArrivalDate" />
+	</div>
+</div>
+
+
+@code{
+    public DateTime? DateValue {get;set;} = new DateTime(DateTime.Now.Year,DateTime.Now.Month,10);
+    public DateTime MinDate {get;set;} = new DateTime(DateTime.Now.Year,DateTime.Now.Month,05);
+    public DateTime MaxDate {get;set;} = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 27);
+}
+
+<br />
+<button class="btn btn-primary mb-4" @onclick="CalculateDistance">Calculate</button>
 
 <br />
 
