@@ -28,7 +28,7 @@
                     <th>@row.ArrivalDate</th>
                     <th>@row.SizeCategory</th>
                     <th>@row.Weight</th>
-                    <th>@row.Categories</th>
+                    <th>@String.Join(", ", row.Categories)</th>
                     <th>@row.PackageStatus</th>
                 <th>
                         <a class="function-link" @onclick="() => CancelBooking(row)">Cancel</a>
