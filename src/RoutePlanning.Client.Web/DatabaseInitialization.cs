@@ -67,9 +67,6 @@ public static class DatabaseInitialization
 
     private static async Task seedCategories(RoutePlanningDatabaseContext context)
     {
-        var fees = new ParcelCategory { Name = "Fee" };
-        await context.AddAsync(fees);
-
         var recordedDelivery = new ParcelCategory { Name = "Recorded delivery" };
         await context.AddAsync(recordedDelivery);
 
