@@ -40,8 +40,7 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
             DepartureDate = command.DepartureDate,
             Destination = destinationLocation,
             Origin = originLocation,
-            PackageStatus = DeliveryStatus.Booked,
-            SizeCategory = "A", // TODO: CALCULATE THIS
+            PackageStatus = DeliveryStatus.Booked, // TODO: CALCULATE THIS
             Weight = command.WeightInKilos,
         };
         // TODO: REDUCE CAPACITY WHEN WE HAVE A REMAINING VOLUME

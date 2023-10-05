@@ -196,21 +196,22 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
         CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
-        var weaponsCategories = new List<ParcelCategory>
+        var parcelCategories = new List<ParcelCategory>
         {
-            context.Set<ParcelCategory>().Local.First()
+            context.Set<ParcelCategory>().Local.First(),
+            context.Set<ParcelCategory>().Local.Last()
         };
 
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, DeliveryStatus.InTransit);
+            parcelCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, DeliveryStatus.InTransit);
+            parcelCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, DeliveryStatus.InTransit);
+            parcelCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, DeliveryStatus.InTransit);
+            parcelCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, DeliveryStatus.InTransit);
+            parcelCategories, DeliveryStatus.InTransit);
     }
 
     private static async Task<ParcelCategory> CreateParcelCategory(RoutePlanningDatabaseContext context, string name, double priceFactor, bool isSupported)
