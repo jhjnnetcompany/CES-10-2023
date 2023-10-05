@@ -1,6 +1,7 @@
 ﻿using Netcompany.Net.DomainDrivenDesign.Models;
+using RoutePlanning.Domain.Locations;
 
-namespace RoutePlanning.Domain.Locations;
+namespace RoutePlanning.Domain.Bookings;
 
 public sealed class Booking : AggregateRoot<Booking>
 {
@@ -11,5 +12,5 @@ public sealed class Booking : AggregateRoot<Booking>
     public string SizeCategory { get; set; } = default!;
     public int Weight { get; set; } = default!;
     public DeliveryStatus PackageStatus { get; set; }
-    public ParcelCategory Category { get; set; } = default!;
+    public IEnumerable<ParcelCategory> Category { get; set; } = default!;
 }
