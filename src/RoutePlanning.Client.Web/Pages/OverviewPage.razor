@@ -1,0 +1,65 @@
+﻿@page "/Overview"
+
+@page "/listdisplay"
+
+<h3>List Display</h3>
+
+<div>
+    <button @onclick="SortByColumn">Sort by Name</button>
+    <button @onclick="SortByColumn">Sort by Date</button>
+    <!-- Add more buttons for additional columns as needed -->
+</div>
+
+<div class="table--responsive-scroll">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Origin</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Departure Date</th>
+            <th scope="col">Arrival Date</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Category</th>
+            <th scope="col">Package Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in sortedItems)
+        {
+            <tr>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>@item</th>
+                <th>
+                    <a class="function-link" @onclick="SortByColumn">Cancel</a>
+                </th>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<string> items = new List<string> { "Item 3", "Item 1", "Item 2" };
+    private List<string> sortedItems = new List<string>();
+
+    private void SortByColumn()
+    {
+        // Implement sorting logic based on the selected column
+        // For simplicity, we'll just sort the list alphabetically here
+        sortedItems = items.OrderBy(item => item).ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+        // Initialize the sortedItems list with the original items
+        sortedItems = new List<string>(items);
+    }
+}
