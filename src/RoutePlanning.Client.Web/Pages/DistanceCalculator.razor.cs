@@ -1,11 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Components;
 using RoutePlanning.Application.Category.Queries.SelectableCategoryList;
-using RoutePlanning.Application.Locations.Queries.Distance;
 using RoutePlanning.Application.Locations.Queries.SelectableLocationList;
 using RoutePlanning.Application.Routes.Queries.GetRoutes;
 using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
-using RoutePlanning.Application.WeightClass.Queries;
 using RoutePlanning.Domain.Locations;
 
 namespace RoutePlanning.Client.Web.Pages;
@@ -22,7 +20,6 @@ public sealed partial class DistanceCalculator
 
     private ParcelSize ParcelSize = new();
     private SelectableCategory? SelectedCategory { get; set; }
-    private SelectableWeightClass? SelectedWeightClass { get; set; }
     private string? DisplaySource { get; set; }
     private string? DisplayDestination { get; set; }
     private double? DisplayDistance { get; set; }
