@@ -223,7 +223,6 @@ public static class DatabaseInitialization
             weaponsCategories, "In transit");
     }
 
-
     private static async Task<Category> CreateCategory(RoutePlanningDatabaseContext context, string name)
     {
         var newCategory = new Category(name);

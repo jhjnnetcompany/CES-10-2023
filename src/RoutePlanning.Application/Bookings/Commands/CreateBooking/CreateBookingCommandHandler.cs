@@ -10,12 +10,12 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
 {
     private readonly IRepository<Booking> _bookings;
     private readonly IRepository<Location> _locations;
-    private readonly IRepository<Domain.Categories.Category> _categories;
+    private readonly IQueryable<Domain.Categories.Category> _categories;
 
     public CreateBookingCommandHandler(
         IRepository<Booking> bookings,
         IRepository<Location> locations,
-        IRepository<Domain.Categories.Category> categories)
+        IQueryable<Domain.Categories.Category> categories)
     {
         _bookings = bookings;
         _locations = locations;
