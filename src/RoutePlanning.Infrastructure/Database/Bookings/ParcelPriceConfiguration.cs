@@ -11,5 +11,7 @@ public sealed class ParcelPriceConfiguration : IEntityTypeConfiguration<ParcelPr
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.ParcelSize);
+
+        builder.HasOne(x => x.ParcelWeight);
     }
 }
