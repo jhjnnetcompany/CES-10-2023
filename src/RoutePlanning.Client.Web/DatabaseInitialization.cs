@@ -146,26 +146,29 @@ public static class DatabaseInitialization
         var stMarie = new Location("St. Marie");
         await context.AddAsync(stMarie);
 
-        CreateTwoWayConnection(tripoli, tanger, 8);
-        CreateTwoWayConnection(tanger, marrakesh, 8);
-        CreateTwoWayConnection(marrakesh, sierraLeone, 8);
-        CreateTwoWayConnection(marrakesh, goldCoast, 8);
-        CreateTwoWayConnection(tripoli, goldCoast, 8);
-        CreateTwoWayConnection(sierraLeone, stHelena, 8);
-        CreateTwoWayConnection(stHelena, capeTown, 8);
-        CreateTwoWayConnection(capeTown, whaleBay, 8);
-        CreateTwoWayConnection(capeTown, dragonMountain, 8);
-        CreateTwoWayConnection(capeTown, amatave, 8);
-        CreateTwoWayConnection(capeTown, stMarie, 8);
-        CreateTwoWayConnection(dragonMountain, lakeVictoria, 8);
-        CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8);
-        CreateTwoWayConnection(suakin, darfur, 8);
-        CreateTwoWayConnection(suakin, cairo, 8);
-        CreateTwoWayConnection(darfur, kabalo, 8);
-        CreateTwoWayConnection(tripoli, darfur, 8);
-        CreateTwoWayConnection(goldCoast, luanda, 8);
-        CreateTwoWayConnection(goldCoast, whaleBay, 8);
-        CreateTwoWayConnection(amatave, kapSuardafui, 8);
+        var oceanic = new Company("Oceanic Airlines 1");
+        await context.AddAsync(oceanic);
+
+        CreateTwoWayConnection(tripoli, tanger, 8, 1, oceanic);
+        CreateTwoWayConnection(tanger, marrakesh, 8, 1, oceanic);
+        CreateTwoWayConnection(marrakesh, sierraLeone, 8, 1, oceanic);
+        CreateTwoWayConnection(marrakesh, goldCoast, 8, 1, oceanic);
+        CreateTwoWayConnection(tripoli, goldCoast, 8, 1, oceanic);
+        CreateTwoWayConnection(sierraLeone, stHelena, 8, 1, oceanic);
+        CreateTwoWayConnection(stHelena, capeTown, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, whaleBay, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, dragonMountain, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, amatave, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, stMarie, 8, 1, oceanic);
+        CreateTwoWayConnection(dragonMountain, lakeVictoria, 8, 1, oceanic);
+        CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8, 1, oceanic);
+        CreateTwoWayConnection(suakin, darfur, 8, 1, oceanic);
+        CreateTwoWayConnection(suakin, cairo, 8, 1, oceanic);
+        CreateTwoWayConnection(darfur, kabalo, 8, 1, oceanic);
+        CreateTwoWayConnection(tripoli, darfur, 8, 1, oceanic);
+        CreateTwoWayConnection(goldCoast, luanda, 8, 1, oceanic);
+        CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
+        CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
         await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200, "Weapons", "In transit");
@@ -186,9 +189,9 @@ public static class DatabaseInitialization
         await context.AddAsync(bob);
     }
 
-    private static void CreateTwoWayConnection(Location locationA, Location locationB, int distance)
+    private static void CreateTwoWayConnection(Location locationA, Location locationB, double timeInHours, double costInDollars, Company company)
     {
-        locationA.AddConnection(locationB, distance);
-        locationB.AddConnection(locationA, distance);
+        locationA.AddConnection(locationB, timeInHours, costInDollars, company);
+        locationB.AddConnection(locationA, timeInHours, costInDollars, company);
     }
 }
