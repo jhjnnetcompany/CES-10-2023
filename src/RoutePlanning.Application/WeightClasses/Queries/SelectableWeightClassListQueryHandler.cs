@@ -4,9 +4,9 @@ using Netcompany.Net.Cqs.Queries;
 namespace RoutePlanning.Application.WeightClass.Queries;
 public sealed class SelectableWeightClassListQueryHandler : IQueryHandler<SelectableWeightClassListQuery, IReadOnlyList<SelectableWeightClass>>
 {
-    private readonly IQueryable<RoutePlanning.Domain.WeightClasses.WeightClass> _weightClasses;
+    private readonly IQueryable<Domain.ParcelWeight> _weightClasses;
 
-    public SelectableWeightClassListQueryHandler(IQueryable<RoutePlanning.Domain.WeightClasses.WeightClass> locations)
+    public SelectableWeightClassListQueryHandler(IQueryable<Domain.ParcelWeight> locations)
     {
         _weightClasses = locations;
     }

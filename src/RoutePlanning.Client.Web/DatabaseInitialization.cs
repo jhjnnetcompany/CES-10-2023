@@ -1,9 +1,8 @@
 ﻿using Netcompany.Net.UnitOfWork;
+using RoutePlanning.Domain;
 using RoutePlanning.Domain.Bookings;
-using RoutePlanning.Domain.Categories;
 using RoutePlanning.Domain.Locations;
 using RoutePlanning.Domain.Users;
-using RoutePlanning.Domain.WeightClasses;
 using RoutePlanning.Infrastructure.Database;
 
 namespace RoutePlanning.Client.Web;
@@ -37,8 +36,8 @@ public static class DatabaseInitialization
         DateTimeOffset arrivalDate,
         string sizeCategory,
         int weight,
-        IEnumerable<Category> category,
-        string packageStatus)
+        IEnumerable<ParcelCategory> categories,
+        DeliveryStatus packageStatus)
     {
         var booking = new Booking
         {
@@ -48,7 +47,7 @@ public static class DatabaseInitialization
             ArrivalDate = arrivalDate,
             SizeCategory = sizeCategory,
             Weight = weight,
-            Categories = category,
+            Categories = categories,
             PackageStatus = packageStatus
         };
         await context.AddAsync(booking);
@@ -56,34 +55,31 @@ public static class DatabaseInitialization
 
     private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
     {
-        var ltOneKg = new WeightClass("< 1 KG");
+        var ltOneKg = new ParcelWeight("< 1 KG");
         await context.AddAsync(ltOneKg);
 
-        var betweenOneAndFive = new WeightClass("Between 1 and 5 KG");
+        var betweenOneAndFive = new ParcelWeight("Between 1 and 5 KG");
         await context.AddAsync(betweenOneAndFive);
 
-        var gtOneKg = new WeightClass("> 5 KG");
+        var gtOneKg = new ParcelWeight("> 5 KG");
         await context.AddAsync(gtOneKg);
     }
 
     private static async Task seedCategories(RoutePlanningDatabaseContext context)
     {
-        var fees = new Category("Fee");
-        await context.AddAsync(fees);
-
-        var recordedDelivery = new Category("Recorded delivery");
+        var recordedDelivery = new ParcelCategory { Name = "Recorded delivery" };
         await context.AddAsync(recordedDelivery);
 
-        var weapons = new Category("Weapons");
+        var weapons = new ParcelCategory { Name = "Weapons" };
         await context.AddAsync(weapons);
 
-        var liveAnimals = new Category("Live Animals");
+        var liveAnimals = new ParcelCategory { Name = "Live Animals" };
         await context.AddAsync(liveAnimals);
 
-        var cautiosParcels = new Category("Cautios Parcels");
+        var cautiosParcels = new ParcelCategory { Name = "Cautios Parcels" };
         await context.AddAsync(cautiosParcels);
 
-        var refridgeratedGoods = new Category("Refridgerated Goods");
+        var refridgeratedGoods = new ParcelCategory { Name = "Refridgerated Goods" };
         await context.AddAsync(refridgeratedGoods);
     }
 
@@ -209,24 +205,23 @@ public static class DatabaseInitialization
         CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
         CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
-        var weaponsCategories = new List<Category> { await CreateCategory(context, "Weapons") };
+        var weaponsCategories = new List<ParcelCategory> { await CreateParcelCategory(context, "Weapons", 1, true) };
 
         await CreateSingleBooking(context, stMarie, cairo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, "In transit");
+            weaponsCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, darfur, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, "In transit");
+            weaponsCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, goldCoast, darfur, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, "In transit");
+            weaponsCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, stMarie, goldCoast, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, "In transit");
+            weaponsCategories, DeliveryStatus.InTransit);
         await CreateSingleBooking(context, cairo, kabalo, DateTimeOffset.Now, DateTimeOffset.Now, "Size A", 200,
-            weaponsCategories, "In transit");
+            weaponsCategories, DeliveryStatus.InTransit);
     }
 
-
-    private static async Task<Category> CreateCategory(RoutePlanningDatabaseContext context, string name)
+    private static async Task<ParcelCategory> CreateParcelCategory(RoutePlanningDatabaseContext context, string name, double priceFactor, bool isSupported)
     {
-        var newCategory = new Category(name);
+        var newCategory = new ParcelCategory { Name = name, PriceFactor = priceFactor, IsSupported = isSupported } ;
         return (await context.AddAsync(newCategory)).Entity;
     }
 

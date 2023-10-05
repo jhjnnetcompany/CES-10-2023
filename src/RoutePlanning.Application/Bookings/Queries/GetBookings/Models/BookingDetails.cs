@@ -10,6 +10,6 @@ public class BookingDetails
     public DateTimeOffset ArrivalDate { get; set; } = default!;
     public string SizeCategory { get; set; } = default!;
     public double Weight { get; set; } = default!;
-    public IEnumerable<string> Category { get; set; } = default!;
+    public IEnumerable<string> Categories { get; set; } = default!;
     public string PackageStatus { get; set; } = default!;
 }

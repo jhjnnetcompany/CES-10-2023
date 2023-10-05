@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Netcompany.Net.Cqs.Commands;
 using Netcompany.Net.DomainDrivenDesign.Services;
+using RoutePlanning.Domain;
 using RoutePlanning.Domain.Bookings;
 using RoutePlanning.Domain.Locations;
 
@@ -10,12 +11,12 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
 {
     private readonly IRepository<Booking> _bookings;
     private readonly IRepository<Location> _locations;
-    private readonly IRepository<Domain.Categories.Category> _categories;
+    private readonly IQueryable<ParcelCategory> _categories;
 
     public CreateBookingCommandHandler(
         IRepository<Booking> bookings,
         IRepository<Location> locations,
-        IRepository<Domain.Categories.Category> categories)
+        IQueryable<ParcelCategory> categories)
     {
         _bookings = bookings;
         _locations = locations;
@@ -30,7 +31,7 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
             .SingleAsync(x => x.Name == command.DestinationName, cancellationToken);
 
         var categories= await _categories
-            .Where(x => command.Category.Any(c => c == x.Name))
+            .Where(x => command.Categories.Any(c => c == x.Name))
             .ToListAsync(cancellationToken);
 
         var newBooking = new Booking
@@ -39,7 +40,7 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
             DepartureDate = command.DepartureDate,
             Destination = destinationLocation,
             Origin = originLocation,
-            PackageStatus = "In processing",
+            PackageStatus = DeliveryStatus.Booked,
             SizeCategory = "A", // TODO: CALCULATE THIS
             Weight = command.WeightInKilos,
         };

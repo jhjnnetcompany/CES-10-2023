@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Netcompany.Net.Cqs.Queries;
+using RoutePlanning.Domain;
 
 namespace RoutePlanning.Application.Category.Queries.SelectableCategoryList;
 public sealed class SelectableCategoryListQueryHandler : IQueryHandler<SelectableCategoryListQuery, IReadOnlyList<SelectableCategory>>
 {
-    private readonly IQueryable<RoutePlanning.Domain.Categories.Category> _categories;
+    private readonly IQueryable<ParcelCategory> _categories;
 
-    public SelectableCategoryListQueryHandler(IQueryable<RoutePlanning.Domain.Categories.Category> categories)
+    public SelectableCategoryListQueryHandler(IQueryable<ParcelCategory> categories)
     {
         _categories = categories;
     }

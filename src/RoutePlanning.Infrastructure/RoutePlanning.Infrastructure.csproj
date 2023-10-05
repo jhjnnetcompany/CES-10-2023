@@ -17,4 +17,8 @@
     <ProjectReference Include="..\RoutePlanning.Domain\RoutePlanning.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\WeightClasses\" />
+  </ItemGroup>
+
 </Project>
