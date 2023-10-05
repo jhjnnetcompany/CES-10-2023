@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
+using Microsoft.Extensions.DependencyInjection;
 using Netcompany.Net.Cqs;
 using Netcompany.Net.Validation;
 using RoutePlanning.Domain;

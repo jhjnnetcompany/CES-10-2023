@@ -6,7 +6,7 @@ public sealed record CreateBookingCommand(
     string DestinationName,
     DateTimeOffset DepartureDate,
     double WeightInKilos, 
-    int Height,
-    int Depth,
-    int Breadth,
+    double Height,
+    double Depth,
+    double Breadth,
     List<string> CategoryNames) : ICommand;
