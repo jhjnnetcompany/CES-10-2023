@@ -12,7 +12,7 @@ public sealed partial class DistanceCalculator
 {
     private IEnumerable<SelectableLocation>? Locations { get; set; }
     private IEnumerable<SelectableCategory>? Categories { get; set; }
-    private IEnumerable<SelectableWeightClass>? WeightClasses { get; set; }
+    private double? WeightInKilos { get; set; }
     private SelectableLocation? SelectedSource { get; set; }
     private SelectableLocation? SelectedDestination { get; set; }
     private DateTime? SelectedDepartureDate { get; set; }
@@ -32,7 +32,6 @@ public sealed partial class DistanceCalculator
     {
         Locations = await Mediator.Send(new SelectableLocationListQuery(), CancellationToken.None);
         Categories = await Mediator.Send(new SelectableCategoryListQuery(), CancellationToken.None);
-        WeightClasses = await Mediator.Send(new SelectableWeightClassListQuery(), CancellationToken.None);
         ParcelSize = new();
     }
 

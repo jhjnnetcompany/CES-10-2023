@@ -22,7 +22,8 @@ public static class DatabaseInitialization
             await SeedUsers(context);
             await SeedCategories(context);
             await SeedLocationsAndRoutes(context);
-            await SeedWeightClasses(context);
+            await SeedCategories(context);
+            await SeedWeightsSizesPrices(context);
 
             unitOfWork.Commit();
         }
@@ -53,16 +54,132 @@ public static class DatabaseInitialization
         await context.AddAsync(booking);
     }
 
-    private static async Task SeedWeightClasses(RoutePlanningDatabaseContext context)
+    private static async Task SeedWeightsSizesPrices(RoutePlanningDatabaseContext context)
     {
-        var ltOneKg = new ParcelWeight("< 1 KG");
-        await context.AddAsync(ltOneKg);
+        var lessThanOneKg = new ParcelWeight("< 1 KG", 1.0);
+        await context.AddAsync(lessThanOneKg);
 
-        var betweenOneAndFive = new ParcelWeight("Between 1 and 5 KG");
-        await context.AddAsync(betweenOneAndFive);
+        var betweenOneAndFiveKg = new ParcelWeight("Between 1 and 5 KG", 5.0);
+        await context.AddAsync(betweenOneAndFiveKg);
 
-        var gtOneKg = new ParcelWeight("> 5 KG");
-        await context.AddAsync(gtOneKg);
+        var GreaterThanFiveKg = new ParcelWeight("> 5 KG", 20);
+        await context.AddAsync(GreaterThanFiveKg);
+
+        var sub25 = new ParcelSize
+        {
+            Name = "A",
+            MaxDepth = 25,
+            MaxHeight = 25,
+            MaxBreadth = 25
+        };
+        await context.AddAsync(sub25);
+
+        var sub40 = new ParcelSize
+        {
+            Name = "B",
+            MaxDepth = 40,
+            MaxHeight = 40,
+            MaxBreadth = 40
+        };
+        await context.AddAsync(sub40);
+
+        var sub200 = new ParcelSize
+        {
+            Name = "C",
+            MaxDepth = 200,
+            MaxHeight = 200,
+            MaxBreadth = 200
+        };
+        await context.AddAsync(sub200);
+
+        var price1 = new ParcelPrice()
+        {
+            ParcelSize = sub25,
+            ParcelWeight = lessThanOneKg,
+            priceInDollars = 40,
+        };
+
+        await context.AddAsync(price1);
+
+        var price2 = new ParcelPrice()
+        {
+            ParcelSize = sub25,
+            ParcelWeight = betweenOneAndFiveKg,
+            priceInDollars = 60,
+
+        };
+
+        await context.AddAsync(price2);
+
+        var price3 = new ParcelPrice()
+        {
+            ParcelSize = sub25,
+            ParcelWeight = GreaterThanFiveKg,
+            priceInDollars = 80,
+
+        };
+
+        await context.AddAsync(price3);
+
+        var price4 = new ParcelPrice()
+        {
+            ParcelSize = sub40,
+            ParcelWeight = lessThanOneKg,
+            priceInDollars = 48,
+
+        };
+
+        await context.AddAsync(price4);
+
+        var price5 = new ParcelPrice()
+        {
+            ParcelSize = sub40,
+            ParcelWeight = betweenOneAndFiveKg,
+            priceInDollars = 68,
+
+        };
+
+        await context.AddAsync(price5);
+
+        var price6 = new ParcelPrice()
+        {
+            ParcelSize = sub40,
+            ParcelWeight = GreaterThanFiveKg,
+            priceInDollars = 88,
+
+        };
+
+        await context.AddAsync(price6);
+
+        var price7 = new ParcelPrice()
+        {
+            ParcelSize = sub200,
+            ParcelWeight = lessThanOneKg,
+            priceInDollars = 80,
+
+        };
+
+        await context.AddAsync(price7);
+
+        var price8 = new ParcelPrice()
+        {
+            ParcelSize = sub40,
+            ParcelWeight = betweenOneAndFiveKg,
+            priceInDollars = 100,
+
+        };
+
+        await context.AddAsync(price8);
+
+        var price9 = new ParcelPrice()
+        {
+            ParcelSize = sub40,
+            ParcelWeight = GreaterThanFiveKg,
+            priceInDollars = 120,
+
+        };
+
+        await context.AddAsync(price9);
     }
 
     private static async Task SeedCategories(RoutePlanningDatabaseContext context)
@@ -88,7 +205,7 @@ public static class DatabaseInitialization
         var marrakesh = new Location("Marrakesh");
         await context.AddAsync(marrakesh);
 
-        var canaryIslands = new Location("Canary island");
+        var canaryIslands = new Location("Canary islands");
         await context.AddAsync(canaryIslands);
 
         var tanger = new Location("Tanger");

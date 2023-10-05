@@ -7,7 +7,13 @@
 <LocationSelector Label="Source" Locations="@Locations" @bind-Selected="SelectedSource"></LocationSelector>
 <LocationSelector Label="Destination" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
 <CategorySelector Label="Parcel Category" Categories="@Categories" @bind-Selected="SelectedCategory"></CategorySelector>
-<WeightClassSelector Label="Weight class" WeightClasses="@WeightClasses" @bind-Selected="SelectedWeightClass"></WeightClassSelector>
+
+<div class="form-group row mb-3">
+	<label for="parcel weight in kilos" class="col-sm-2 col-form-label">Parcel weight in kilos</label>
+	<div id="parcel-height" class="col-sm-4">
+		<input class="form-control" type="number" @bind="WeightInKilos" />
+	</div>
+</div>
 
 <div class="form-group row mb-3">
     <label for="parcel-height" class="col-sm-2 col-form-label">Parcel height</label>
