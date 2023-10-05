@@ -17,12 +17,12 @@ public sealed class Location : AggregateRoot<Location>
 
     public IReadOnlyCollection<Connection> Connections => _connections.AsReadOnly();
 
-    public Connection AddConnection(Location destination, int distance)
+    public Connection AddConnection(Location destination, double timeInHours, double costInDollars, Company owner)
     {
-        Connection connection = new(this, destination, distance);
-
+        Console.WriteLine(owner.Name);
+        Console.WriteLine("hey");
+        Connection connection = new(this, destination, timeInHours, costInDollars);
         _connections.Add(connection);
-
         return connection;
     }
 }

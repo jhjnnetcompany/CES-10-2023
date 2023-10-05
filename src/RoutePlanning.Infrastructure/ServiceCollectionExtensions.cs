@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<RoutePlanningDatabaseContext>(builder =>
         {
             builder.UseSqlite(keepAliveConnection);
+            //builder.UseSqlServer("Data Source=tcp:dbs-oa-dk2.database.windows.net,1433;Initial Catalog=db-oa-dk2;User ID=admin-oa-dk2;Password=oceanicFlyAway16");
             builder.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
         });
         

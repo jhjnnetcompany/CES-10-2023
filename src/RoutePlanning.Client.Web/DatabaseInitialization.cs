@@ -1,7 +1,9 @@
 ﻿using Netcompany.Net.UnitOfWork;
 using RoutePlanning.Domain.Bookings;
+using RoutePlanning.Domain.Categories;
 using RoutePlanning.Domain.Locations;
 using RoutePlanning.Domain.Users;
+using RoutePlanning.Domain.WeightClasses;
 using RoutePlanning.Infrastructure.Database;
 
 namespace RoutePlanning.Client.Web;
@@ -20,6 +22,9 @@ public static class DatabaseInitialization
         {
             await SeedUsers(context);
             await SeedLocationsAndRoutes(context);
+            await seedCategories(context);
+            await seedWeightClasses(context);
+
             unitOfWork.Commit();
         }
     }
@@ -47,6 +52,39 @@ public static class DatabaseInitialization
             PackageStatus = packageStatus
         };
         await context.AddAsync(booking);
+    }
+
+    private static async Task seedWeightClasses(RoutePlanningDatabaseContext context)
+    {
+        var ltOneKg = new WeightClass("< 1 KG");
+        await context.AddAsync(ltOneKg);
+
+        var betweenOneAndFive = new WeightClass("Between 1 and 5 KG");
+        await context.AddAsync(betweenOneAndFive);
+
+        var gtOneKg = new WeightClass("> 5 KG");
+        await context.AddAsync(gtOneKg);
+    }
+
+    private static async Task seedCategories(RoutePlanningDatabaseContext context)
+    {
+        var fees = new Category("Fee");
+        await context.AddAsync(fees);
+
+        var recordedDelivery = new Category("Recorded delivery");
+        await context.AddAsync(recordedDelivery);
+
+        var weapons = new Category("Weapons");
+        await context.AddAsync(weapons);
+
+        var liveAnimals = new Category("Live Animals");
+        await context.AddAsync(liveAnimals);
+
+        var cautiosParcels = new Category("Cautios Parcels");
+        await context.AddAsync(cautiosParcels);
+
+        var refridgeratedGoods = new Category("Refridgerated Goods");
+        await context.AddAsync(refridgeratedGoods);
     }
 
     private static async Task SeedLocationsAndRoutes(RoutePlanningDatabaseContext context)
@@ -147,26 +185,29 @@ public static class DatabaseInitialization
         var stMarie = new Location("St. Marie");
         await context.AddAsync(stMarie);
 
-        CreateTwoWayConnection(tripoli, tanger, 8);
-        CreateTwoWayConnection(tanger, marrakesh, 8);
-        CreateTwoWayConnection(marrakesh, sierraLeone, 8);
-        CreateTwoWayConnection(marrakesh, goldCoast, 8);
-        CreateTwoWayConnection(tripoli, goldCoast, 8);
-        CreateTwoWayConnection(sierraLeone, stHelena, 8);
-        CreateTwoWayConnection(stHelena, capeTown, 8);
-        CreateTwoWayConnection(capeTown, whaleBay, 8);
-        CreateTwoWayConnection(capeTown, dragonMountain, 8);
-        CreateTwoWayConnection(capeTown, amatave, 8);
-        CreateTwoWayConnection(capeTown, stMarie, 8);
-        CreateTwoWayConnection(dragonMountain, lakeVictoria, 8);
-        CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8);
-        CreateTwoWayConnection(suakin, darfur, 8);
-        CreateTwoWayConnection(suakin, cairo, 8);
-        CreateTwoWayConnection(darfur, kabalo, 8);
-        CreateTwoWayConnection(tripoli, darfur, 8);
-        CreateTwoWayConnection(goldCoast, luanda, 8);
-        CreateTwoWayConnection(goldCoast, whaleBay, 8);
-        CreateTwoWayConnection(amatave, kapSuardafui, 8);
+        var oceanic = new Company("Oceanic Airlines 1");
+        await context.AddAsync(oceanic);
+
+        CreateTwoWayConnection(tripoli, tanger, 8, 1, oceanic);
+        CreateTwoWayConnection(tanger, marrakesh, 8, 1, oceanic);
+        CreateTwoWayConnection(marrakesh, sierraLeone, 8, 1, oceanic);
+        CreateTwoWayConnection(marrakesh, goldCoast, 8, 1, oceanic);
+        CreateTwoWayConnection(tripoli, goldCoast, 8, 1, oceanic);
+        CreateTwoWayConnection(sierraLeone, stHelena, 8, 1, oceanic);
+        CreateTwoWayConnection(stHelena, capeTown, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, whaleBay, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, dragonMountain, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, amatave, 8, 1, oceanic);
+        CreateTwoWayConnection(capeTown, stMarie, 8, 1, oceanic);
+        CreateTwoWayConnection(dragonMountain, lakeVictoria, 8, 1, oceanic);
+        CreateTwoWayConnection(lakeVictoria, kapSuardafui, 8, 1, oceanic);
+        CreateTwoWayConnection(suakin, darfur, 8, 1, oceanic);
+        CreateTwoWayConnection(suakin, cairo, 8, 1, oceanic);
+        CreateTwoWayConnection(darfur, kabalo, 8, 1, oceanic);
+        CreateTwoWayConnection(tripoli, darfur, 8, 1, oceanic);
+        CreateTwoWayConnection(goldCoast, luanda, 8, 1, oceanic);
+        CreateTwoWayConnection(goldCoast, whaleBay, 8, 1, oceanic);
+        CreateTwoWayConnection(amatave, kapSuardafui, 8, 1, oceanic);
 
         var weaponsCategories = new List<Category> { await CreateCategory(context, "Weapons") };
 
@@ -204,9 +245,9 @@ public static class DatabaseInitialization
         await context.AddAsync(bob);
     }
 
-    private static void CreateTwoWayConnection(Location locationA, Location locationB, int distance)
+    private static void CreateTwoWayConnection(Location locationA, Location locationB, double timeInHours, double costInDollars, Company company)
     {
-        locationA.AddConnection(locationB, distance);
-        locationB.AddConnection(locationA, distance);
+        locationA.AddConnection(locationB, timeInHours, costInDollars, company);
+        locationB.AddConnection(locationA, timeInHours, costInDollars, company);
     }
 }

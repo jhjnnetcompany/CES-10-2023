@@ -5,6 +5,10 @@
 <h1>Distance Calculator</h1>
 
 <LocationSelector Label="Source" Locations="@Locations" @bind-Selected="SelectedSource"></LocationSelector>
+<LocationSelector Label="Destination" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
+<CategorySelector Label="Parcel Category" Categories="@Categories" @bind-Selected="SelectedCategory"></CategorySelector>
+<WeightClassSelector Label="Weight class" WeightClasses="@WeightClasses" @bind-Selected="SelectedWeightClass"></WeightClassSelector>
+
 <LocationSelector Label="DestinationName" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
 
 <button class="btn btn-primary mb-5" @onclick="CalculateDistance">Calculate</button>

@@ -13,9 +13,9 @@ public sealed class PathTest
         var locationB = new Location("B");
         var locationC = new Location("C");
 
-        locationA.AddConnection(locationB, 2);
-        locationB.AddConnection(locationC, 3);
-        locationA.AddConnection(locationC, 6);
+        locationA.AddConnection(locationB, 2, 4, new Company("a"));
+        locationB.AddConnection(locationC, 3, 5, new Company("b"));
+        locationA.AddConnection(locationC, 6, 7, new Company("c"));
 
         var locations = new List<Location> { locationA, locationB, locationC };
 
@@ -25,6 +25,6 @@ public sealed class PathTest
         var distance = shortestDistanceService.CalculateShortestDistance(locationA, locationC);
 
         // Assert
-        Assert.Equal(5, distance);
+        Assert.Equal(5, distance.Sum(x => x.Distance));
     }
 }
