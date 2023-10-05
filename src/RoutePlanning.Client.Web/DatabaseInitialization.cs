@@ -43,7 +43,7 @@ public static class DatabaseInitialization
             ArrivalDate = arrivalDate,
             SizeCategory = sizeCategory,
             Weight = weight,
-            Category = category,
+            Categories = category,
             PackageStatus = packageStatus
         };
         await context.AddAsync(booking);

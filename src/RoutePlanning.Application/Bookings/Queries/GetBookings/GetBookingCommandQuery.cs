@@ -24,7 +24,7 @@ public sealed class GetBookingCommandQuery : IQueryHandler<GetBookingQuery, IEnu
             DepartureDate = x.DepartureDate,
             DestinationName = x.Destination.Name,
             ArrivalDate = x.ArrivalDate,
-            Category = x.Category.Select(x => x.Name),
+            Category = x.Categories.Select(x => x.Name),
             PackageStatus = x.PackageStatus,
             SizeCategory = x.SizeCategory,
             Weight = x.Weight
