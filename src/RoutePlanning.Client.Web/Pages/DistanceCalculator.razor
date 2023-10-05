@@ -9,8 +9,38 @@
 <CategorySelector Label="Parcel Category" Categories="@Categories" @bind-Selected="SelectedCategory"></CategorySelector>
 <WeightClassSelector Label="Weight class" WeightClasses="@WeightClasses" @bind-Selected="SelectedWeightClass"></WeightClassSelector>
 
-<LocationSelector Label="DestinationName" Locations="@Locations" @bind-Selected="SelectedDestination"></LocationSelector>
+<label>
+	Parcel Height
+	<input type="number" @bind="ParcelSize.MaxHeight" />
+</label>
 
+<label>
+	Parcel Breath
+	<input type="number" @bind="ParcelSize.MaxBreadth" />
+</label>
+
+<label>
+	Parcel Depth
+	<input type="number" @bind="ParcelSize.MaxDepth" />
+</label>
+<br />
+
+<label>
+	Departure date
+	<input type="date" @bind="SelectedDepartureDate" /> </label>
+
+<label>
+	Arrival date
+	<input type="date" @bind="SelectedArrivalDate" />
+</label>
+
+@code{
+    public DateTime? DateValue {get;set;} = new DateTime(DateTime.Now.Year,DateTime.Now.Month,10);
+    public DateTime MinDate {get;set;} = new DateTime(DateTime.Now.Year,DateTime.Now.Month,05);
+    public DateTime MaxDate {get;set;} = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 27);
+}
+
+<br />
 <button class="btn btn-primary mb-5" @onclick="CalculateDistance">Calculate</button>
 
 <br />

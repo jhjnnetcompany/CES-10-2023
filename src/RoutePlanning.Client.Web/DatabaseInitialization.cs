@@ -221,7 +221,7 @@ public static class DatabaseInitialization
 
     private static async Task<ParcelCategory> CreateParcelCategory(RoutePlanningDatabaseContext context, string name, double priceFactor, bool isSupported)
     {
-        var newCategory = new ParcelCategory { Name = name, PriceFactor = priceFactor, IsSupported = isSupported } ;
+        var newCategory = new ParcelCategory { Name = name, PriceFactor = priceFactor, IsSupported = isSupported };
         return (await context.AddAsync(newCategory)).Entity;
     }
 
