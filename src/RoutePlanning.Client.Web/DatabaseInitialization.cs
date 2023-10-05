@@ -122,7 +122,7 @@ public static class DatabaseInitialization
         var stMarie = new Location("St. Marie");
         await context.AddAsync(stMarie);
 
-        var oceanic = new Company("Oceanic Airlines");
+        var oceanic = new Company("Oceanic Airlines 1");
         await context.AddAsync(oceanic);
 
         CreateTwoWayConnection(tripoli, tanger, 8, 1, oceanic);

@@ -3,7 +3,7 @@ using Netcompany.Net.DomainDrivenDesign.Models;
 
 namespace RoutePlanning.Domain.Locations;
 
-[DebuggerDisplay("{Source} --{Distance}--> {Destination}")]
+[DebuggerDisplay("{Name}")]
 public sealed class Company : Entity<Company>
 {
     public Company(string name)

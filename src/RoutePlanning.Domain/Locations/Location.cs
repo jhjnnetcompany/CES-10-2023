@@ -19,7 +19,10 @@ public sealed class Location : AggregateRoot<Location>
 
     public Connection AddConnection(Location destination, double timeInHours, double costInDollars, Company owner)
     {
-        Connection connection = new(this, destination, timeInHours, costInDollars, owner);
+        Console.WriteLine(owner.Name);
+        Console.WriteLine("hey");
+        Connection connection = new(this, destination, timeInHours, costInDollars);
+        _connections.Add(connection);
         return connection;
     }
 }
