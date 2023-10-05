@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RoutePlanning.Domain;
 using Netcompany.Net.Cqs;
 using Netcompany.Net.Validation;
+using RoutePlanning.Domain;
 
 namespace RoutePlanning.Application;
 

@@ -1,44 +1,32 @@
 ﻿@page "/Overview"
 
-@page "/listdisplay"
-
 <h3>List Display</h3>
-
-<div>
-    <button @onclick="SortByColumn">Sort by Name</button>
-    <button @onclick="SortByColumn">Sort by Date</button>
-    <!-- Add more buttons for additional columns as needed -->
-</div>
 
 <div class="table--responsive-scroll">
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Origin</th>
-            <th scope="col">Destination</th>
-            <th scope="col">Departure Date</th>
-            <th scope="col">Arrival Date</th>
-            <th scope="col">Volume</th>
-            <th scope="col">Weight</th>
-            <th scope="col">Category</th>
-            <th scope="col">Package Status</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(0)">Origin</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(1)">Destination</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(2)">Departure Date</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(3)">Arrival Date</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(4)">Volume</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(5)">Weight</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(6)">Category</th>
+                <th scope="col function-link" @onclick="() => SortByColumn(7)">Package Status</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in sortedItems)
+        @foreach (var row in sortedItems)
         {
             <tr>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
-                <th>@item</th>
+                @foreach (var item in row)
+                {
+                    <th>@item</th>
+                }
                 <th>
-                    <a class="function-link" @onclick="SortByColumn">Cancel</a>
+                    <a class="function-link" @onclick="CancelAgreement">Cancel</a>
                 </th>
             </tr>
         }
@@ -47,19 +35,29 @@
 </div>
 
 @code {
-    private List<string> items = new List<string> { "Item 3", "Item 1", "Item 2" };
-    private List<string> sortedItems = new List<string>();
-
-    private void SortByColumn()
+    // TODO: REPLACE WITH API CALL
+    private List<List<string>> items = new()
     {
-        // Implement sorting logic based on the selected column
-        // For simplicity, we'll just sort the list alphabetically here
-        sortedItems = items.OrderBy(item => item).ToList();
+        new List<string> { "x", " d", " y", " r", " w", " 6", " 7", " 8" },
+        new List<string> { " g", " b", " x", " u", " y", " 6", " 7", " 8" },
+        new List<string> { " k", " a", " j", " k", " å", " 6", " 7", " 8" },
+    };
+    private List<List<string>> sortedItems = new();
+
+    private void CancelAgreement()
+    {
+        
+    }
+    private void SortByColumn(int columnId)
+    {
+    // Implement sorting logic based on the selected column
+    // For simplicity, we'll just sort the list alphabetically here
+        sortedItems = items.OrderBy(row => row[columnId]).ToList();
     }
 
     protected override void OnInitialized()
     {
         // Initialize the sortedItems list with the original items
-        sortedItems = new List<string>(items);
+        sortedItems = new List<List<string>>(items);
     }
 }
