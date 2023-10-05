@@ -12,7 +12,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRoutePlanningInfrastructure(this IServiceCollection services)
     {
-        var keepAliveConnection = new SqliteConnection("DataSource=:memory:");
+        var keepAliveConnection = new SqliteConnection("DataSource=:memory:"); // change to persistent
+
         keepAliveConnection.Open();
         services.AddDbContext<RoutePlanningDatabaseContext>(builder =>
         {
