@@ -6,7 +6,7 @@ namespace RoutePlanning.Domain.Locations;
 [DebuggerDisplay("{Value} km")]
 public sealed record Distance : IValueObject
 {
-    public Distance(int value)
+    public Distance(double value)
     {
         if (value <= 0)
         {
@@ -16,9 +16,9 @@ public sealed record Distance : IValueObject
         Value = value;
     }
 
-    public int Value { get; private set; }
+    public double Value { get; private set; }
 
-    public static implicit operator Distance(int distance) => new(distance);
+    public static implicit operator Distance(double distance) => new(distance);
 
-    public static implicit operator int(Distance distance) => distance.Value;
+    public static implicit operator double(Distance distance) => distance.Value;
 }

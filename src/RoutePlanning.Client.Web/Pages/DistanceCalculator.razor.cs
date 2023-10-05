@@ -19,7 +19,7 @@ public sealed partial class DistanceCalculator
 
     private string? DisplaySource { get; set; }
     private string? DisplayDestination { get; set; }
-    private int? DisplayDistance { get; set; }
+    private double? DisplayDistance { get; set; }
 
     [Inject]
     private IMediator Mediator { get; set; } = default!;
