@@ -6,13 +6,13 @@ namespace RoutePlanning.Domain.Locations;
 [DebuggerDisplay("{Source} --{TimeInHours}--> {Destination}")]
 public sealed class Connection : Entity<Connection>
 {
-    public Connection(Location source, Location destination, Distance timeInHours, Distance costInDollars/*, Company company*/)
+    public Connection(Location source, Location destination, Distance timeInHours, Distance costInDollars, Company company)
     {
         Source = source;
         Destination = destination;
         TimeInHours = timeInHours;
         CostInDollars = costInDollars;
-        //Company = company;
+        Company = company;
     }
 
     private Connection()
@@ -21,7 +21,7 @@ public sealed class Connection : Entity<Connection>
         Destination = null!;
         TimeInHours = null!;
         CostInDollars = null!;
-        //Company = null!;
+        Company = null!;
     }
 
     public Location Source { get; private set; }
@@ -32,5 +32,5 @@ public sealed class Connection : Entity<Connection>
 
     public Distance CostInDollars { get; private set; }
 
-    /*public Company Company { get; private set; }*/
+    public Company Company { get; private set; }
 }
