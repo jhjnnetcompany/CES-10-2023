@@ -14,7 +14,7 @@ public sealed partial class DistanceCalculator
     private IEnumerable<SelectableCategory> Categories { get; set; } = default!;
     private double WeightInKilos { get; set; } = 0;
     private SelectableLocation? SelectedSource { get; set; }
-    private SelectableLocation? SelectedDestination { get; set; }
+    private SelectableLocation SelectedDestination { get; set; } = default!;
 
     private ParcelSize ParcelSize = new();
     private SelectableCategory? SelectedCategory { get; set; }
@@ -58,7 +58,7 @@ public sealed partial class DistanceCalculator
             ParcelSize.MaxHeight,
             ParcelSize.MaxDepth,
             ParcelSize.MaxBreadth,
-            Categories.Select(x => x.Name).ToList());
+            new List<string> { SelectedDestination.Name });
         
         await Mediator.Send(command);
     }
