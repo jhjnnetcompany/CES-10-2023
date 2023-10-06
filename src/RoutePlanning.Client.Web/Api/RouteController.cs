@@ -28,6 +28,12 @@ public sealed class RoutesController : ControllerBase
         return Task.FromResult("Hello World!");
     }
 
+    [HttpGet("[action]")]
+    public Task<string> GetParcelCategories()
+    {
+        return Task.FromResult("Hello World!");
+    }
+
     [HttpPost("[action]")]
     public async Task AddTwoWayConnection(CreateTwoWayConnectionCommand command)
     {

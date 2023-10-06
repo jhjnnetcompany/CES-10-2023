@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using RoutePlanning.Application.Bookings.Commands.CreateBooking;
 using RoutePlanning.Application.Category.Queries.SelectableCategoryList;
 using RoutePlanning.Application.Locations.Queries.SelectableLocationList;
+using RoutePlanning.Application.Routes.Queries.GetParcelCategories;
 using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
 using RoutePlanning.Domain.Locations;
 
@@ -31,7 +32,7 @@ public sealed partial class DistanceCalculator
         ParcelSize = new();
     }
 
-    private void CalculateDistance()
+    private async Task CalculateDistance()
     {
         if (SelectedSource is not null && SelectedDestination is not null)
         {
@@ -39,13 +40,21 @@ public sealed partial class DistanceCalculator
             {
                 new()
                 {
-                    CostInDollars = 10,
+                    CostInDollars = await CalculatePrice(),
                     DestinationName = SelectedDestination.Name,
                     OriginName = SelectedSource.Name,
                     TimeInHours = 8
                 },
             };
         }
+    }
+
+    private async Task<double> CalculatePrice()
+    {
+        var priceFactor = await Mediator.Send(new GetParcelCategoriesQuery(new List<string> { SelectedCategory.Name }, ParcelSize, WeightInKilos));
+
+        return priceFactor;
+
     }
 
     public async Task CreateBooking(RouteDetails routeDetails)
@@ -59,7 +68,7 @@ public sealed partial class DistanceCalculator
             ParcelSize.MaxDepth,
             ParcelSize.MaxBreadth,
             new List<string> { SelectedCategory.Name });
-        
+
         await Mediator.Send(command);
         /*
         url = "/.auth/login/aad?post_login_redirect_url="

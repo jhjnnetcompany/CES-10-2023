@@ -10,10 +10,12 @@ namespace RoutePlanning.Application.Routes.Queries.GetRoutes;
 public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnumerable<RouteDetails>>
 {
     private readonly IRepository<Connection> _connections;
+    private readonly IRepository<ParcelSize> _sizes;
     private readonly IQueryable<ParcelCategory> _parcelCategories;
 
-    public GetBookingQueryHandler(IRepository<Connection> connections, IQueryable<ParcelCategory> parcelCategories)
+    public GetBookingQueryHandler(IRepository<Connection> connections, IRepository<ParcelSize> sizes, IQueryable<ParcelCategory> parcelCategories)
     {
+        _sizes = sizes;
         _connections = connections;
         _parcelCategories = parcelCategories;
     }
@@ -36,11 +38,8 @@ public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnum
             return new List<RouteDetails>();
         }
 
-        var priceFactor = CalculatePriceFactor(
-            command.Weight,
-            command.Height,
-            command.Depth,
-            command.Breadth);
+        var priceFactor = await CalculatePriceFactor(
+            command.CategoryNames);
 
         return await _connections.Select(x => new RouteDetails
         {
@@ -48,18 +47,31 @@ public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnum
             DestinationName = x.Destination.Name,
             CostInDollars = x.CostInDollars.Value * priceFactor,
             TimeInHours = x.TimeInHours.Value
+
         }).ToListAsync(cancellationToken);
     }
-#pragma warning disable CA1822 // Mark members as static
-    public double CalculatePriceFactor(double weightInKilos, double height, double depth, double breadth)
-#pragma warning restore CA1822 // Mark members as static
+    public async Task<double> CalculatePriceFactor(IEnumerable<string> categories)
     {
-        var sizeCategory = GetSizeCategory(height, depth, breadth);
-        return weightInKilos + sizeCategory;
+
+        var selectedCategories = await _parcelCategories.Where(x => categories.Contains(x.Name)).ToListAsync();
+
+        var priceFactor = 1.0;
+        foreach (var category in selectedCategories)
+        {
+            priceFactor *= (1 + category.PriceFactor);
+        }
+
+        return priceFactor;
     }
 
-    public static double GetSizeCategory(double height, double depth, double breadth)
+    public async Task<ParcelSize> GetSizeCategory(double height, double depth, double breadth)
     {
-        return height + depth + breadth;
+        var query = await _sizes
+                       .Where(s => s.MaxHeight > height && s.MaxDepth > depth && s.MaxBreadth > breadth)
+                       .ToListAsync();
+
+        query.Sort((emp1, emp2) => emp1.Name.CompareTo(emp2.Name));
+
+        return query[0];
     }
 }
