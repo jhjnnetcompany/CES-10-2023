@@ -17,7 +17,7 @@ public sealed partial class DistanceCalculator
     private SelectableLocation SelectedDestination { get; set; } = default!;
 
     private ParcelSize ParcelSize = new();
-    private SelectableCategory? SelectedCategory { get; set; }
+    private SelectableCategory SelectedCategory { get; set; } = default!;
 
     [Inject]
     private IMediator Mediator { get; set; } = default!;
@@ -58,8 +58,13 @@ public sealed partial class DistanceCalculator
             ParcelSize.MaxHeight,
             ParcelSize.MaxDepth,
             ParcelSize.MaxBreadth,
-            new List<string> { SelectedDestination.Name });
+            new List<string> { SelectedCategory.Name });
         
         await Mediator.Send(command);
+        /*
+        url = "/.auth/login/aad?post_login_redirect_url="
+                     + Request.Query["redirect_url"];
+        */
+        // RedirectToPage("");
     }
 }
