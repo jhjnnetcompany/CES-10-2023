@@ -38,7 +38,7 @@ public sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingC
         var newBooking = new Booking
         {
             Origin = originLocation,
-            SizeCategory = "Test",
+            SizeCategory = "Size A",
             Weight = command.WeightInKilos,
             PackageStatus = DeliveryStatus.Booked,
             Destination = destinationLocation,

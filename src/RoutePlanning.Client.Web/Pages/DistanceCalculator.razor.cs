@@ -5,7 +5,6 @@ using RoutePlanning.Application.Category.Queries.SelectableCategoryList;
 using RoutePlanning.Application.Locations.Queries.Distance;
 using RoutePlanning.Application.Locations.Queries.SelectableLocationList;
 using RoutePlanning.Application.Routes.Queries.GetParcelCategories;
-using RoutePlanning.Application.Routes.Queries.GetRoutes;
 using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
 using RoutePlanning.Domain.Locations;
 
@@ -21,6 +20,10 @@ public sealed partial class DistanceCalculator
 
     private ParcelSize ParcelSize = new();
     private SelectableCategory SelectedCategory { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
 
     [Inject]
     private IMediator Mediator { get; set; } = default!;
@@ -41,8 +44,6 @@ public sealed partial class DistanceCalculator
             SelectedDestination.LocationId));
 
         var numberOfSegments = Math.Floor(totalTime / 8); // Time constraints made us do this :(
-
-
 
         if (SelectedSource is not null && SelectedDestination is not null && totalTime > 0)
         {
@@ -80,10 +81,7 @@ public sealed partial class DistanceCalculator
             new List<string> { SelectedCategory.Name });
 
         await Mediator.Send(command);
-        /*
-        url = "/.auth/login/aad?post_login_redirect_url="
-                     + Request.Query["redirect_url"];
-        */
-        // RedirectToPage("");
+
+        NavigationManager.NavigateTo("/Overview");
     }
 }
