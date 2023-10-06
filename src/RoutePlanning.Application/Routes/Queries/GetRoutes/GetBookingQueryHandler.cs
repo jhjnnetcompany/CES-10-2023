@@ -63,15 +63,4 @@ public sealed class GetBookingQueryHandler : IQueryHandler<GetRoutesQuery, IEnum
 
         return priceFactor;
     }
-
-    public async Task<ParcelSize> GetSizeCategory(double height, double depth, double breadth)
-    {
-        var query = await _sizes
-                       .Where(s => s.MaxHeight > height && s.MaxDepth > depth && s.MaxBreadth > breadth)
-                       .ToListAsync();
-
-        query.Sort((emp1, emp2) => emp1.Name.CompareTo(emp2.Name));
-
-        return query[0];
-    }
 }

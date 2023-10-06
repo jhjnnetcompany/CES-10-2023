@@ -22,7 +22,6 @@ public static class DatabaseInitialization
             await SeedUsers(context);
             await SeedCategories(context);
             await SeedLocationsAndRoutes(context);
-            await SeedCategories(context);
             await SeedWeightsSizesPrices(context);
 
             unitOfWork.Commit();

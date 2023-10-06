@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Components;
 using RoutePlanning.Application.Bookings.Commands.CreateBooking;
 using RoutePlanning.Application.Category.Queries.SelectableCategoryList;
+using RoutePlanning.Application.Locations.Queries.Distance;
 using RoutePlanning.Application.Locations.Queries.SelectableLocationList;
 using RoutePlanning.Application.Routes.Queries.GetParcelCategories;
+using RoutePlanning.Application.Routes.Queries.GetRoutes;
 using RoutePlanning.Application.Routes.Queries.GetRoutes.Models;
 using RoutePlanning.Domain.Locations;
 
@@ -14,7 +16,7 @@ public sealed partial class DistanceCalculator
     private IEnumerable<SelectableLocation> Locations { get; set; } = default!;
     private IEnumerable<SelectableCategory> Categories { get; set; } = default!;
     private double WeightInKilos { get; set; } = 0;
-    private SelectableLocation? SelectedSource { get; set; }
+    private SelectableLocation SelectedSource { get; set; } = default!;
     private SelectableLocation SelectedDestination { get; set; } = default!;
 
     private ParcelSize ParcelSize = new();
@@ -34,16 +36,24 @@ public sealed partial class DistanceCalculator
 
     private async Task CalculateDistance()
     {
-        if (SelectedSource is not null && SelectedDestination is not null)
+        var totalTime = await Mediator.Send(new DistanceQuery(
+            SelectedSource.LocationId, 
+            SelectedDestination.LocationId));
+
+        var numberOfSegments = Math.Floor(totalTime / 8); // Time constraints made us do this :(
+
+
+
+        if (SelectedSource is not null && SelectedDestination is not null && totalTime > 0)
         {
             Route = new List<RouteDetails>
             {
                 new()
                 {
-                    CostInDollars = await CalculatePrice(),
+                    CostInDollars = await CalculatePrice() * numberOfSegments,
                     DestinationName = SelectedDestination.Name,
                     OriginName = SelectedSource.Name,
-                    TimeInHours = 8
+                    TimeInHours = totalTime
                 },
             };
         }
